@@ -1,5 +1,4 @@
-from controller.alchemy_controller.main import SessionLocal
-
+from .main import SessionLocal
 
 def get_db():
     db = SessionLocal()

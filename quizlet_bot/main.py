@@ -6,6 +6,11 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from controller.mysql_orm_controller import engine, create_tables, Base
+from controller.mysql_orm_controller.initialize_database import initialize_database
+
+initialize_database(engine=engine)
+create_tables(engine=engine, Base=Base)
 
 # Bot token can be obtained via https://t.me/BotFather
 TOKEN = "6907074579:AAFJOtvMEDN8ewOVP4XnxOxWyZY-OTjLXXM"

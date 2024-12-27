@@ -1,6 +1,5 @@
 # Retry mechanism for database connection
 import time
-
 from sqlalchemy import Engine
 
 
