@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+  db:
+    image: mysql:8
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_DATABASE: user_management
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - combined-network
+  quizlet_bot:
+    build: ./quizlet_bot
+    command: python main.py
+    container_name: quizlet_bot
+    depends_on:
+      - db
+    networks:
+      - combined-network
+networks:
+  combined-network:
+    driver: bridge
