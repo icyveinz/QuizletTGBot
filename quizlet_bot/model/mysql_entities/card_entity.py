@@ -8,6 +8,6 @@ class Card(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     main_side = Column(String(500), nullable=False)
     reverse_side = Column(String(500), nullable=False)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(String(50), nullable=False)
     is_studied = Column(Boolean, default=False)
     date = Column(DateTime, default=datetime.datetime.utcnow)

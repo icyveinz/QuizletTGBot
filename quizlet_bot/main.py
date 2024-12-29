@@ -5,10 +5,8 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import CommandStart
 from controller.mysql_orm_controller import engine, create_tables, Base
 from controller.mysql_orm_controller.initialize_database import initialize_database
-from view import start_command
 from view.start_route.start_command import register_start_command
 
 # Initialize the database
