@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from controller.mysql_orm_controller.base_init import Base
+from controller import Base
 
 
 class Card(Base):
