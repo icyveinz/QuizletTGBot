@@ -7,7 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from controller.mysql_orm_controller import engine, create_tables, Base
 from controller.mysql_orm_controller.initialize_database import initialize_database
-from view.start_route.start_command import register_start_command
+from view.start_route.start_command import register_handlers
 
 # Initialize the database
 initialize_database(engine=engine)
@@ -21,7 +21,7 @@ async def main() -> None:
     dp = Dispatcher()
 
     # Register handlers
-    register_start_command(dp)
+    register_handlers(dp)
 
     # Start polling
     await dp.start_polling(bot)
