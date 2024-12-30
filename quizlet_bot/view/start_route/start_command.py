@@ -5,7 +5,6 @@ from controller import get_db
 from model import Card, UserStateEntity
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-# /start command
 async def start_command(message: types.Message):
     user_id = str(message.from_user.id)
     session = next(get_db())
@@ -17,8 +16,7 @@ async def start_command(message: types.Message):
         if user_cards:
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
-                    KeyboardButton(text="View Cards"),
-                    KeyboardButton(text="Create Cards")
+                    [KeyboardButton(text="View Cards"), KeyboardButton(text="Create Cards")]
                 ],
                 resize_keyboard=True
             )
@@ -29,7 +27,7 @@ async def start_command(message: types.Message):
         else:
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
-                    KeyboardButton(text="Create Cards")
+                    [KeyboardButton(text="Create Cards")]
                 ],
                 resize_keyboard=True
             )
@@ -84,7 +82,7 @@ async def handle_card_input(message: types.Message):
 
         if user_state.state == "AWAITING_FRONT":
             # Save the front text
-            user_state.main_side = message.text.strip()
+            user_state.front_side = message.text.strip()
             user_state.state = "AWAITING_BACK"
             session.commit()
 
@@ -93,7 +91,7 @@ async def handle_card_input(message: types.Message):
         elif user_state.state == "AWAITING_BACK":
             # Save the back text and create card
             back = message.text.strip()
-            front = user_state.main_side
+            front = user_state.front_side
 
             new_card = Card(front_side=front, back_side=back, user_id=user_id)
             session.add(new_card)
@@ -101,8 +99,8 @@ async def handle_card_input(message: types.Message):
 
             # Reset user state
             user_state.state = None
-            user_state.main_side = None
-            user_state.reverse_side = None
+            user_state.front_side = None
+            user_state.back_side = None
             session.commit()
 
             await message.reply(f"Card created!\nFront: {front}\nBack: {back}")
