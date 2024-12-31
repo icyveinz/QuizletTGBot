@@ -7,7 +7,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from controller.mysql_orm_controller import engine, create_tables, Base
 from controller.mysql_orm_controller.initialize_database import initialize_database
-from view.start_route.start_command import register_handlers
+from view.register_handlers import register_handlers
 
 # Initialize the database
 initialize_database(engine=engine)

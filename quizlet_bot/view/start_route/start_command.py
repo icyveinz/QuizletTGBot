@@ -1,5 +1,4 @@
-from aiogram import types, Dispatcher
-from aiogram.filters import CommandStart
+from aiogram import types
 from sqlalchemy.exc import SQLAlchemyError
 from controller import get_db
 from model import Card, UserStateEntity
@@ -111,9 +110,3 @@ async def handle_card_input(message: types.Message):
         print(f"Database error: {e}")
     finally:
         session.close()
-
-# Register handlers
-def register_handlers(dp: Dispatcher):
-    dp.message.register(start_command, CommandStart())
-    dp.message.register(handle_create_cards_button, lambda message: message.text == "Create Cards")
-    dp.message.register(handle_card_input)
