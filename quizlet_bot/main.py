@@ -21,7 +21,7 @@ async def main() -> None:
     dp = Dispatcher()
 
     # Register handlers
-    register_handlers(dp)
+    register_handlers(dp, bot)
 
     # Start polling
     await dp.start_polling(bot)

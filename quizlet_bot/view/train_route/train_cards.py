@@ -1,4 +1,4 @@
-from aiogram import types
+from aiogram import types, Bot
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from controller import get_db
 from model import Card, UserStateEntity
@@ -10,22 +10,22 @@ def create_card_buttons(card_id, is_card_flipped):
 
     # Create buttons
     buttons = [
-        InlineKeyboardButton(
+        [InlineKeyboardButton(
             text="Flip Card" if not is_card_flipped else "Show Front",
             callback_data=f"flip:{card_id}"
-        ),
-        InlineKeyboardButton(
+        )],
+        [InlineKeyboardButton(
             text="Mark as Studied",
             callback_data=f"mark_studied:{card_id}"
-        ),
-        InlineKeyboardButton(
+        )],
+        [InlineKeyboardButton(
             text="Next Card",
             callback_data=f"next:{card_id}"
-        )
+        )]
     ]
 
-    # Return InlineKeyboardMarkup with buttons
-    return InlineKeyboardMarkup(row_width=1).add(*buttons)
+    # Return InlineKeyboardMarkup with button rows
+    return InlineKeyboardMarkup(inline_keyboard=buttons)
 
 
 
@@ -47,3 +47,60 @@ async def train_cards(message: types.Message):
     connection.commit()
     keyboard = create_card_buttons(card.id, is_card_flipped=False)
     await message.answer(card.front_side, reply_markup=keyboard)
+
+async def handle_card_buttons(callback_query: types.CallbackQuery, bot: Bot):
+    connection = next(get_db())
+
+    action, card_id = callback_query.data.split(":")
+    card_id = int(card_id)
+    user_id = int_to_str(callback_query.from_user.id)
+
+    card = connection.query(Card).filter_by(id=card_id).first()
+    user_state = connection.query(UserStateEntity).filter_by(user_id=user_id).first()
+
+    if not card or not user_state:
+        await callback_query.answer("Error: Card or state not found!")
+        return
+
+    if action == "flip":
+        user_state.is_card_flipped = not user_state.is_card_flipped
+        connection.commit()
+        text = card.back_side if user_state.is_card_flipped else card.front_side
+        keyboard = create_card_buttons(card.id, user_state.is_card_flipped)
+        await bot.edit_message_text(
+            text=text,
+            chat_id=callback_query.message.chat.id,
+            message_id=callback_query.message.message_id,
+            reply_markup=keyboard
+        )
+    elif action == "mark_studied":
+        card.is_studied = True
+        connection.commit()
+        await send_next_card(callback_query, connection, user_id, bot)
+    elif action == "next:":
+        await send_next_card(callback_query, connection, user_id, bot)
+
+
+
+async def send_next_card(callback_query, session, user_id, bot: Bot):
+    # Fetch next card
+    card = session.query(Card).filter_by(user_id=user_id, is_studied=False).first()
+
+    if not card:
+        await callback_query.message.edit_text("No more cards to train!")
+        return
+
+    # Update user state
+    user_state = session.query(UserStateEntity).filter_by(user_id=user_id).first()
+    user_state.current_card_id = card.id
+    user_state.is_card_flipped = False
+    session.commit()
+
+    # Display next card
+    keyboard = create_card_buttons(card.id, is_card_flipped=False)
+    await bot.edit_message_text(
+        text=card.front_side,
+        chat_id=callback_query.message.chat.id,
+        message_id=callback_query.message.message_id,
+        reply_markup=keyboard
+    )
