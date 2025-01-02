@@ -15,7 +15,7 @@ async def start_command(message: types.Message):
         if user_cards:
             keyboard = ReplyKeyboardMarkup(
                 keyboard=[
-                    [KeyboardButton(text="View Cards"), KeyboardButton(text="Create Cards")]
+                    [KeyboardButton(text="View Cards"), KeyboardButton(text="Create Cards"), KeyboardButton(text="Train Cards")]
                 ],
                 resize_keyboard=True
             )
