@@ -15,6 +15,7 @@ create_tables(engine=engine, Base=Base)
 
 TOKEN = "6907074579:AAFJOtvMEDN8ewOVP4XnxOxWyZY-OTjLXXM"
 
+
 async def main() -> None:
     # Initialize Bot instance
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
@@ -25,6 +26,7 @@ async def main() -> None:
 
     # Start polling
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)

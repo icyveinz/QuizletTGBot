@@ -4,29 +4,29 @@ from controller import get_db
 from model import Card, UserStateEntity
 from tools import int_to_str
 
+
 def create_card_buttons(card_id, is_card_flipped):
     if not card_id:  # Check if card_id is valid
         raise ValueError("Invalid card_id provided to create_card_buttons.")
 
     # Create buttons
     buttons = [
-        [InlineKeyboardButton(
-            text="Flip Card" if not is_card_flipped else "Show Front",
-            callback_data=f"flip:{card_id}"
-        )],
-        [InlineKeyboardButton(
-            text="Mark as Studied",
-            callback_data=f"mark_studied:{card_id}"
-        )],
-        [InlineKeyboardButton(
-            text="Next Card",
-            callback_data=f"next:{card_id}"
-        )]
+        [
+            InlineKeyboardButton(
+                text="Flip Card" if not is_card_flipped else "Show Front",
+                callback_data=f"flip:{card_id}",
+            )
+        ],
+        [
+            InlineKeyboardButton(
+                text="Mark as Studied", callback_data=f"mark_studied:{card_id}"
+            )
+        ],
+        [InlineKeyboardButton(text="Next Card", callback_data=f"next:{card_id}")],
     ]
 
     # Return InlineKeyboardMarkup with button rows
     return InlineKeyboardMarkup(inline_keyboard=buttons)
-
 
 
 async def train_cards(message: types.Message):
@@ -36,9 +36,7 @@ async def train_cards(message: types.Message):
     user_state = connection.query(UserStateEntity).filter_by(user_id=user_id).first()
     if not user_state:
         user_state = UserStateEntity(
-            user_id=int_to_str(user_id),
-            current_card_id=card.id,
-            is_card_flipped=False
+            user_id=int_to_str(user_id), current_card_id=card.id, is_card_flipped=False
         )
         connection.add(user_state)
     else:
@@ -47,6 +45,7 @@ async def train_cards(message: types.Message):
     connection.commit()
     keyboard = create_card_buttons(card.id, is_card_flipped=False)
     await message.answer(card.front_side, reply_markup=keyboard)
+
 
 async def handle_card_buttons(callback_query: types.CallbackQuery, bot: Bot):
     connection = next(get_db())
@@ -71,7 +70,7 @@ async def handle_card_buttons(callback_query: types.CallbackQuery, bot: Bot):
             text=text,
             chat_id=callback_query.message.chat.id,
             message_id=callback_query.message.message_id,
-            reply_markup=keyboard
+            reply_markup=keyboard,
         )
     elif action == "mark_studied":
         card.is_studied = True
@@ -79,7 +78,6 @@ async def handle_card_buttons(callback_query: types.CallbackQuery, bot: Bot):
         await send_next_card(callback_query, connection, user_id, bot)
     elif action == "next:":
         await send_next_card(callback_query, connection, user_id, bot)
-
 
 
 async def send_next_card(callback_query, session, user_id, bot: Bot):
@@ -102,5 +100,5 @@ async def send_next_card(callback_query, session, user_id, bot: Bot):
         text=card.front_side,
         chat_id=callback_query.message.chat.id,
         message_id=callback_query.message.message_id,
-        reply_markup=keyboard
+        reply_markup=keyboard,
     )

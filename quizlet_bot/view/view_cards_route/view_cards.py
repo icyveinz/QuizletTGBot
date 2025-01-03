@@ -18,9 +18,13 @@ async def handle_view_cards_button(message: types.Message):
                 response += f"{index + 1})\nАверс: {card.front_side}\nРеверс: {card.back_side}\n\n"
             await message.reply(response)
         else:
-            await message.reply("You don't have any cards yet. Use the 'Create Cards' button to add new cards.")
+            await message.reply(
+                "You don't have any cards yet. Use the 'Create Cards' button to add new cards."
+            )
     except SQLAlchemyError as e:
-        await message.reply("An error occurred while fetching your cards. Please try again later.")
+        await message.reply(
+            "An error occurred while fetching your cards. Please try again later."
+        )
         print(f"Database error: {e}")
     finally:
         session.close()

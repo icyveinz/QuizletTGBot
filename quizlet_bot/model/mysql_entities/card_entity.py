@@ -4,7 +4,7 @@ from controller import Base
 
 
 class Card(Base):
-    __tablename__ = 'cards'
+    __tablename__ = "cards"
     id = Column(Integer, primary_key=True, autoincrement=True)
     front_side = Column(String(500), nullable=False)
     back_side = Column(String(500), nullable=False)
