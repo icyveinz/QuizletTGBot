@@ -7,7 +7,7 @@ def initialize_database(engine: Engine):
     retries = 5
     for i in range(retries):
         try:
-            with engine.connect() as connection:
+            with engine.connect() as _:
                 print("Connected to the database!")
                 break
         except Exception as e:

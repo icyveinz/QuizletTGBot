@@ -96,7 +96,7 @@ async def send_next_card(callback_query, session, user_id, bot: Bot):
         session.query(Card)
         .filter(
             Card.user_id == user_id,
-            Card.is_studied == False,
+            not Card.is_studied,
             Card.id != user_state.current_card_id,
         )
         .first()

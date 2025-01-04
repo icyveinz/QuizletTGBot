@@ -10,7 +10,7 @@ jobs:
   formatter:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Grant write permissions to the GITHUB_TOKEN
+      contents: write
     steps:
       # Check out the repository
       - name: Checkout code
@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.9"  # Replace with your desired Python version
+          python-version: "3.9"
 
       # Install Black
       - name: Install Black
@@ -29,6 +29,14 @@ jobs:
       # Run Black to format the code
       - name: Run Black
         run: black .
+
+      # Install Ruff
+      - name: Install Ruff
+        run: pip install ruff
+
+      # Run Ruff to check the code
+      - name: Run Black
+        run: ruff check --fix
 
       # Check if there are any changes after formatting
       - name: Check for changes

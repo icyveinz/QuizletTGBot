@@ -7,3 +7,7 @@ run:
 generate:
 	cls
 	pip freeze > requirements.txt
+
+fix:
+	cls
+	ruff check --fix
