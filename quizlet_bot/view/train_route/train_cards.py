@@ -32,17 +32,27 @@ def create_card_buttons(card_id, is_card_flipped):
 async def train_cards(message: types.Message):
     connection = next(get_db())
     user_id = message.from_user.id
+
     card = connection.query(Card).filter_by(user_id=user_id, is_studied=False).first()
+
     user_state = connection.query(UserStateEntity).filter_by(user_id=user_id).first()
     if not user_state:
         user_state = UserStateEntity(
-            user_id=int_to_str(user_id), current_card_id=card.id, is_card_flipped=False
+            user_id=int_to_str(user_id),
+            current_card_id=card.id if card else None,
+            is_card_flipped=False
         )
         connection.add(user_state)
     else:
-        user_state.current_card_id = card.id
+        user_state.current_card_id = card.id if card else None
         user_state.is_card_flipped = False
+
     connection.commit()
+
+    if not card:
+        await message.answer("No more cards to study!")
+        return
+
     keyboard = create_card_buttons(card.id, is_card_flipped=False)
     await message.answer(card.front_side, reply_markup=keyboard)
 

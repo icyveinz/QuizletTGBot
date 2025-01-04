@@ -12,5 +12,5 @@ cleaned:
 push:
 	cls
 	git add .
-	git commit -m "pushed via Makefile"
+	git commit -m "$(msg)"
 	git push -u origin main
