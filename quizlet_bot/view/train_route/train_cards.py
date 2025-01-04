@@ -40,7 +40,7 @@ async def train_cards(message: types.Message):
         user_state = UserStateEntity(
             user_id=int_to_str(user_id),
             current_card_id=card.id if card else None,
-            is_card_flipped=False
+            is_card_flipped=False,
         )
         connection.add(user_state)
     else:
