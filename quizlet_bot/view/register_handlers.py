@@ -20,6 +20,8 @@ def register_handlers(dp: Dispatcher, bot: Bot):
         handle_create_cards_button, lambda message: message.text == "Create Cards"
     )
     dp.message.register(train_cards, lambda message: message.text == "Train Cards")
-    dp.message.register(reset_trained_cards_route, lambda message: message.text == "Reset Trained Cards")
+    dp.message.register(
+        reset_trained_cards_route, lambda message: message.text == "Reset Trained Cards"
+    )
     dp.callback_query.register(partial(handle_card_buttons, bot=bot))
     dp.message.register(handle_card_input)

@@ -9,18 +9,12 @@ async def reset_trained_cards_route(message: types.Message):
     user_id = message.from_user.id
     try:
         cards = (
-            connection
-            .query(Card)
+            connection.query(Card)
             .filter_by(user_id=user_id, is_studied=True)
-            .update(
-                {'is_studied': False},
-                synchronize_session='fetch'
-            )
+            .update({"is_studied": False}, synchronize_session="fetch")
         )
         connection.commit()
-        await message.reply(
-            f"{cards} were reset so you could repeat it again"
-        )
+        await message.reply(f"{cards} were reset so you could repeat it again")
     except SQLAlchemyError as e:
         await message.reply(f"Unexpected error: {e}")
     finally:
