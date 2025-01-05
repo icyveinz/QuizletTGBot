@@ -92,18 +92,27 @@ async def handle_card_buttons(callback_query: types.CallbackQuery, bot: Bot):
 
 async def send_next_card(callback_query, session, user_id, bot: Bot):
     user_state = session.query(UserStateEntity).filter_by(user_id=user_id).first()
+
+    if user_state.current_card_id:
+        user_state.add_seen_card(user_state.current_card_id)
+
+    seen_cards_ids = user_state.get_seen_card()
+
     card = (
         session.query(Card)
         .filter(
             Card.user_id == user_id,
-            not Card.is_studied,
+            ~Card.id.in_(seen_cards_ids),
             Card.id != user_state.current_card_id,
+            Card.is_studied.is_(False),
         )
         .first()
     )
 
     if not card:
         await callback_query.message.edit_text("No more cards to train!")
+        user_state.reset_seen_cards()
+        session.commit()
         return
 
     # Update user state
