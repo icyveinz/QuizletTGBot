@@ -1,6 +1,8 @@
 import json
 from sqlalchemy import Column, String, Text, Integer, ForeignKey, Boolean
 from controller import Base
+
+
 class UserStateEntity(Base):
     __tablename__ = "user_states"
     user_id = Column(String(50), nullable=False, primary_key=True)

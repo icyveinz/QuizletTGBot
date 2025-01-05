@@ -1,6 +1,8 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from controller import Base
+
+
 class Card(Base):
     __tablename__ = "cards"
     id = Column(Integer, primary_key=True, autoincrement=True)
