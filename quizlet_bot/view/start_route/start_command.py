@@ -51,6 +51,8 @@ async def start_command(message: types.Message):
         session.close()
 
 
+
+
 # Handler for "Create Cards" button
 async def handle_create_cards_button(message: types.Message):
     user_id = str(message.from_user.id)

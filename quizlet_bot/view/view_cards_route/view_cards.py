@@ -28,3 +28,5 @@ async def handle_view_cards_button(message: types.Message):
         print(f"Database error: {e}")
     finally:
         session.close()
+
+
