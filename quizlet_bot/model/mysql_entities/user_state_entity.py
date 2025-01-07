@@ -26,3 +26,5 @@ class UserStateEntity(Base):
 
     def reset_seen_cards(self):
         self.seen_card_ids = json.dumps([])
+
+
