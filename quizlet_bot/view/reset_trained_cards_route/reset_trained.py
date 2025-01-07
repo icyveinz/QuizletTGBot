@@ -19,5 +19,3 @@ async def reset_trained_cards_route(message: types.Message):
         await message.reply(f"Unexpected error: {e}")
     finally:
         connection.close()
-
-

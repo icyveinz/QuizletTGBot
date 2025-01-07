@@ -25,5 +25,3 @@ def register_handlers(dp: Dispatcher, bot: Bot):
     )
     dp.callback_query.register(partial(handle_card_buttons, bot=bot))
     dp.message.register(handle_card_input)
-
-
