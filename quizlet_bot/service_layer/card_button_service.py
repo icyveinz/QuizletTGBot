@@ -20,7 +20,9 @@ class CardButtonService:
         keyboard = self.create_card_buttons(card.id, False)
         return card, keyboard
 
-    async def handle_card_action(self, action: str, card_id: int, user_id: str, bot: Bot):
+    async def handle_card_action(
+        self, action: str, card_id: int, user_id: str, bot: Bot
+    ):
         card = self.card_repo.get_card(card_id)
         user_state = self.user_state_repo.get_user_state(user_id)
 

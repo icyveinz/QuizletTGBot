@@ -56,6 +56,10 @@ class CardService:
             "Unexpected state. Please press the 'Create Cards' button again to restart."
         )
 
-    async def handle_card_action(self, action: str, card_id: int, user_id: int, bot: Bot):
-        result = await self.button_service.handle_card_action(action, card_id, user_id, bot)
+    async def handle_card_action(
+        self, action: str, card_id: int, user_id: int, bot: Bot
+    ):
+        result = await self.button_service.handle_card_action(
+            action, card_id, user_id, bot
+        )
         return result
