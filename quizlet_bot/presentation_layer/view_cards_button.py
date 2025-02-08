@@ -15,9 +15,7 @@ async def handle_view_cards_button(message: Message):
     if user_cards:
         response = "<b>Ваши добавленные карты:</b>\n\n"
         for index, card in enumerate(user_cards):
-            response += (
-                f"{index + 1})\n<b>Аверс:</b> {card.front_side}\n<i>Реверс:</i> {card.back_side}\n\n"
-            )
+            response += f"{index + 1})\n<b>Аверс:</b> {card.front_side}\n<i>Реверс:</i> {card.back_side}\n\n"
     else:
         response = "You don't have any cards yet. Use the 'Create Cards' button to add new cards."
 

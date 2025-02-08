@@ -1,6 +1,7 @@
 import time
 from sqlalchemy import Engine
 
+
 def initialize_database(engine: Engine):
     retries = 5
     for i in range(retries):

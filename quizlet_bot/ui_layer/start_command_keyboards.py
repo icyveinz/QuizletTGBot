@@ -6,7 +6,12 @@ class StartCommandKeyboards:
 
     @staticmethod
     def startup_card_builder():
-        button_list = ["View Cards", "Create Cards", "Train Cards", "Reset Trained Cards"]
+        button_list = [
+            "View Cards",
+            "Create Cards",
+            "Train Cards",
+            "Reset Trained Cards",
+        ]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
             KeyboardButton(text=option) for option in button_list

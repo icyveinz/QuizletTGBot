@@ -1,6 +1,9 @@
 from aiogram import Router
 from aiogram.types import Message
-from filter_layer.handle_card_input import HandleFrontCardInputFilter, HandleBackCardInputFilter
+from filter_layer.handle_card_input import (
+    HandleFrontCardInputFilter,
+    HandleBackCardInputFilter,
+)
 from service_layer.card_service import CardService
 
 router = Router()
