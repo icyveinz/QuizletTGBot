@@ -49,4 +49,6 @@ class CardService:
             self.user_repo.reset_user_state(user_id)
             return f"Card created!\nFront: {front}\nBack: {text}"
 
-        return "Unexpected state. Please press the 'Create Cards' button again to restart."
+        return (
+            "Unexpected state. Please press the 'Create Cards' button again to restart."
+        )
