@@ -38,3 +38,20 @@ class UserRepository:
             return False
         finally:
             self.db.close()
+
+    def update_user_state_with_front_card(self, user_id: str, front: str) -> bool:
+        try:
+            user_state = (
+                self.db.query(UserStateEntity).filter_by(user_id=user_id).first()
+            )
+            if user_state:
+                user_state.front_side = front
+                user_state.state = "AWAITING_BACK"
+                self.db.commit()
+                return True
+            return False
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            return False
+        finally:
+            self.db.close()
