@@ -18,7 +18,6 @@ class CardService:
         if not card:
             return None, False
 
-        # Update user training state
         user_state = self.user_repo.get_user_state(user_id)
         if not user_state:
             self.user_repo.create_user_state(user_id, card.id)
@@ -29,6 +28,25 @@ class CardService:
 
         return card, is_flipped
 
-    async def reset_studied_cards(self, user_id: int) -> int:
-        """Resets all studied cards for a given user."""
+    async def reset_studied_cards(self, user_id: str) -> int:
         return self.card_repo.reset_studied_cards(user_id)
+
+    async def process_card_input(self, user_id: str, text: str) -> str:
+        user_state = self.user_repo.get_user_state(user_id)
+
+        if not user_state or not user_state.state:
+            return "Please press the 'Create Cards' button first to create a card."
+
+        if user_state.state == "AWAITING_FRONT":
+            self.user_repo.update_user_state(user_id, state="AWAITING_BACK")
+            return "Front side saved! Now, please enter the back side of the card."
+
+        elif user_state.state == "AWAITING_BACK":
+            front = user_state.front_side
+            self.card_repo.create_card(user_id, front, text)
+
+            # Reset user state
+            self.user_repo.reset_user_state(user_id)
+            return f"Card created!\nFront: {front}\nBack: {text}"
+
+        return "Unexpected state. Please press the 'Create Cards' button again to restart."

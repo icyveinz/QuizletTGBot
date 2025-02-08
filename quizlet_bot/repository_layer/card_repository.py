@@ -32,7 +32,7 @@ class CardRepository:
         finally:
             self.db.close()
 
-    def reset_studied_cards(self, user_id: int) -> int:
+    def reset_studied_cards(self, user_id: str) -> int:
         try:
             updated_rows = (
                 self.db.query(Card)
@@ -47,3 +47,8 @@ class CardRepository:
             return 0
         finally:
             self.db.close()
+
+    def create_card(self, user_id: str, front_side: str, back_side: str):
+        new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
+        self.db.add(new_card)
+        self.db.commit()

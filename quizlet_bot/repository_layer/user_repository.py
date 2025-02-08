@@ -16,6 +16,13 @@ class UserRepository:
         self.db.commit()
         return new_state
 
+    def reset_user_state(self, user_id: str):
+        user_state = self.get_user_state(user_id)
+        if user_state:
+            user_state.state = None
+            user_state.front_side = None
+            self.db.commit()
+
     def update_user_state(self, user_id: str, state: str) -> bool:
         try:
             user_state = (
