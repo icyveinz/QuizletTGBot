@@ -4,11 +4,11 @@ import sys
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from controller.mysql_orm_controller import engine, create_tables, Base
-from controller.mysql_orm_controller.initialize_database import initialize_database
-from view.register_handlers import register_handlers
+from db_core_layer.db_config import engine, Base
+from db_core_layer.db_repository import create_tables
+from db_core_layer.db_utils import initialize_database
+from register_handlers import register_handlers
 
-# Initialize the database
 initialize_database(engine=engine)
 create_tables(engine=engine, Base=Base)
 
