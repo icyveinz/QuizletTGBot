@@ -52,3 +52,20 @@ class CardRepository:
         new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
         self.db.add(new_card)
         self.db.commit()
+
+    def get_card(self, card_id: int):
+        return self.db.query(Card).filter_by(id=card_id).first()
+
+    def update_card(self, card: Card):
+        self.db.commit()
+
+    def get_unstudied_cards(self, user_id: str, seen_cards_ids: list):
+        return (
+            self.db.query(Card)
+            .filter(
+                Card.user_id == user_id,
+                ~Card.id.in_(seen_cards_ids),
+                Card.is_studied.is_(False),
+            )
+            .first()
+        )

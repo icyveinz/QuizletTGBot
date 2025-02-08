@@ -1,11 +1,14 @@
+from aiogram import Bot
 from repository_layer.card_repository import CardRepository
 from repository_layer.user_repository import UserRepository
+from service_layer.card_button_service import CardButtonService
 
 
 class CardService:
     def __init__(self):
         self.card_repo = CardRepository()
         self.user_repo = UserRepository()
+        self.button_service = CardButtonService()
 
     async def user_has_cards(self, user_id: str) -> bool:
         return self.card_repo.user_has_cards(user_id)
@@ -52,3 +55,7 @@ class CardService:
         return (
             "Unexpected state. Please press the 'Create Cards' button again to restart."
         )
+
+    async def handle_card_action(self, action: str, card_id: int, user_id: int, bot: Bot):
+        result = await self.button_service.handle_card_action(action, card_id, user_id, bot)
+        return result
