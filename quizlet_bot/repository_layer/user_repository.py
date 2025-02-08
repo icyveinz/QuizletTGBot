@@ -16,7 +16,7 @@ class UserRepository:
         self.db.commit()
         return new_state
 
-    def update_user_state(self, user_id: int, state: str) -> bool:
+    def update_user_state(self, user_id: str, state: str) -> bool:
         try:
             user_state = (
                 self.db.query(UserStateEntity).filter_by(user_id=user_id).first()
