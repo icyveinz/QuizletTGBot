@@ -5,13 +5,12 @@ from service_layer.card_service import CardService
 from service_layer.user_service import UserService
 
 router = Router()
-
+user_service = UserService()
+card_service = CardService()
 
 @router.message(CommandStart())
 async def start_command(message: Message):
     user_id = str(message.from_user.id)
-    user_service = UserService()
-    card_service = CardService()
 
     user_cards_exist = await card_service.user_has_cards(user_id)
 

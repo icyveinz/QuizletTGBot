@@ -31,3 +31,19 @@ class CardRepository:
             return None
         finally:
             self.db.close()
+
+    def reset_studied_cards(self, user_id: int) -> int:
+        try:
+            updated_rows = (
+                self.db.query(Card)
+                .filter_by(user_id=user_id, is_studied=True)
+                .update({"is_studied": False}, synchronize_session="fetch")
+            )
+            self.db.commit()
+            return updated_rows
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            self.db.rollback()
+            return 0
+        finally:
+            self.db.close()

@@ -28,3 +28,7 @@ class CardService:
             is_flipped = user_state.is_card_flipped
 
         return card, is_flipped
+
+    async def reset_studied_cards(self, user_id: int) -> int:
+        """Resets all studied cards for a given user."""
+        return self.card_repo.reset_studied_cards(user_id)

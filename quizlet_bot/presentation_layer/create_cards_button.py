@@ -3,12 +3,11 @@ from aiogram.types import Message
 from service_layer.user_service import UserService
 
 router = Router()
-
+user_service = UserService()
 
 @router.message(F.text == "Create Cards")
 async def handle_create_cards_button(message: Message):
     user_id = str(message.from_user.id)
-    user_service = UserService()
 
     success = await user_service.update_user_state(user_id, "AWAITING_FRONT")
 

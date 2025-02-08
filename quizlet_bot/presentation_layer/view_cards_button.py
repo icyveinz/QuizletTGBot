@@ -3,12 +3,11 @@ from aiogram.types import Message
 from service_layer.card_service import CardService
 
 router = Router()
-
+card_service = CardService()
 
 @router.message(F.text == "View Cards")
 async def handle_view_cards_button(message: Message):
-    user_id = message.from_user.id
-    card_service = CardService()
+    user_id = str(message.from_user.id)
 
     user_cards = await card_service.get_user_cards(user_id)
 

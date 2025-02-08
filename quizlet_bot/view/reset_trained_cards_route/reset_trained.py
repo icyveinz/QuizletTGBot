@@ -1,7 +1,7 @@
 from aiogram import types
 from sqlalchemy.exc import SQLAlchemyError
 from controller import get_db
-from model import Card
+from entity_layer.card import Card
 
 
 async def reset_trained_cards_route(message: types.Message):
