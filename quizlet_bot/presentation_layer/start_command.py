@@ -6,6 +6,7 @@ from service_layer.user_service import UserService
 
 router = Router()
 
+
 @router.message(CommandStart())
 async def start_command(message: Message):
     user_id = str(message.from_user.id)
@@ -24,7 +25,9 @@ async def start_command(message: Message):
         response_text = "Welcome back! You already have cards. Use the buttons below to view or create more."
     else:
         keyboard.add(KeyboardButton(text="Create Cards"))
-        response_text = "You don't have any cards yet. Would you like to create your first cards?"
+        response_text = (
+            "You don't have any cards yet. Would you like to create your first cards?"
+        )
 
     await message.reply(response_text, reply_markup=keyboard)
 
