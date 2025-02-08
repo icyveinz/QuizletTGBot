@@ -1,5 +1,5 @@
 from sqlalchemy.exc import SQLAlchemyError
-from controller import get_db
+from db_core_layer.db_repository import get_db
 from entity_layer.user_state import UserStateEntity
 
 

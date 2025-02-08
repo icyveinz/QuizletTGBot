@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy import Column, Integer, String, Boolean, DateTime
-from controller import Base
+from db_core_layer.db_config import Base
 
 
 class Card(Base):

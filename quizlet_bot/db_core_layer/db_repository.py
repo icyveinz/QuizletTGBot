@@ -1,4 +1,3 @@
-# db_repository.py
 from typing import Type
 from sqlalchemy import Engine
 from sqlalchemy.orm import DeclarativeBase

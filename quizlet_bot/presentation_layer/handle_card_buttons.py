@@ -1,6 +1,5 @@
 from aiogram import Bot, Router
 from aiogram.types import CallbackQuery
-
 from service_layer.card_service import CardService
 
 router = Router()

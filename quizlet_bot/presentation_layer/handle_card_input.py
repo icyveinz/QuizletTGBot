@@ -1,4 +1,4 @@
-from aiogram import Router, F, types
+from aiogram import Router
 from aiogram.types import Message
 from service_layer.card_service import CardService
 
