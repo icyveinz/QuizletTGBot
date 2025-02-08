@@ -16,7 +16,8 @@ class StartCommandKeyboards:
         buttons: list[KeyboardButton] = [
             KeyboardButton(text=option) for option in button_list
         ]
-        kb_builder.add(*buttons)
+        for button in buttons:
+            kb_builder.row(button)
         return kb_builder.as_markup(resize_keyboard=True)
 
     @staticmethod
