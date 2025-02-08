@@ -5,6 +5,7 @@ from service_layer.user_service import UserService
 router = Router()
 user_service = UserService()
 
+
 @router.message(F.text == "Create Cards")
 async def handle_create_cards_button(message: Message):
     user_id = str(message.from_user.id)

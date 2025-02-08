@@ -6,6 +6,7 @@ from ui_layer.keyboard_factory import KeyboardFactory
 router = Router()
 card_service = CardService()
 
+
 @router.message(F.text == "Train Cards")
 async def train_cards_handler(message: Message):
     user_id = str(message.from_user.id)

@@ -8,6 +8,7 @@ router = Router()
 user_service = UserService()
 card_service = CardService()
 
+
 @router.message(CommandStart())
 async def start_command(message: Message):
     user_id = str(message.from_user.id)
