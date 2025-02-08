@@ -23,7 +23,9 @@ class CardRepository:
 
     def get_next_unstudied_card(self, user_id: str):
         try:
-            return self.db.query(Card).filter_by(user_id=user_id, is_studied=False).first()
+            return (
+                self.db.query(Card).filter_by(user_id=user_id, is_studied=False).first()
+            )
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return None
