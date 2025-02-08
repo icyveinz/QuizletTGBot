@@ -18,7 +18,9 @@ class UserRepository:
 
     def update_user_state(self, user_id: int, state: str) -> bool:
         try:
-            user_state = self.db.query(UserStateEntity).filter_by(user_id=user_id).first()
+            user_state = (
+                self.db.query(UserStateEntity).filter_by(user_id=user_id).first()
+            )
             if user_state:
                 user_state.state = state
                 self.db.commit()
