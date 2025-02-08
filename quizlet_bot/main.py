@@ -10,7 +10,7 @@ from db_core_layer.db_utils import initialize_database
 from register_handlers import register_handlers
 
 initialize_database(engine=engine)
-create_tables(engine=engine, Base=Base)
+create_tables(engine=engine)
 
 TOKEN = "6907074579:AAFJOtvMEDN8ewOVP4XnxOxWyZY-OTjLXXM"
 
