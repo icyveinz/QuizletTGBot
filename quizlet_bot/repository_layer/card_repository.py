@@ -18,9 +18,7 @@ class CardRepository:
         if self.db is None:
             raise Exception("Database session not initialized.")
         async with self.db() as session:
-            result = await session.execute(
-                select(Card).filter(Card.user_id == user_id)
-            )
+            result = await session.execute(select(Card).filter(Card.user_id == user_id))
             return result.scalars().count() > 0
 
     async def get_user_cards(self, user_id: str) -> List[Card]:
@@ -67,9 +65,7 @@ class CardRepository:
             await session.rollback()
             return 0
 
-    async def create_card(
-        self, user_id: str, front_side: str, back_side: str
-    ) -> Card:
+    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Card:
         if self.db is None:
             raise Exception("Database session not initialized.")
         async with self.db() as session:
