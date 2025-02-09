@@ -1,13 +1,13 @@
-from db_core_layer.db_config import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 from repository_layer.card_repository import CardRepository
 from repository_layer.user_repository import UserRepository
 from ui_layer.trainer_keyboards import TrainerKeyboards
 
 
 class CardButtonService:
-    def __init__(self):
-        self.card_repo = CardRepository(get_db())
-        self.user_state_repo = UserRepository(get_db())
+    def __init__(self, db: AsyncSession):
+        self.card_repo = CardRepository(db)
+        self.user_state_repo = UserRepository(db)
 
     async def prepare_next_card(self, user_id: str):
         user_state = await self.user_state_repo.get_user(user_id)

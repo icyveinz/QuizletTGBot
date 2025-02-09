@@ -1,14 +1,15 @@
 from aiogram import Router, F
 from aiogram.types import Message
+from sqlalchemy.ext.asyncio import AsyncSession
 from service_layer.card_service import CardService
 from ui_layer.trainer_keyboards import TrainerKeyboards
 
 router = Router()
-card_service = CardService()
 
 
 @router.message(F.text == "Train Cards")
-async def train_cards_handler(message: Message):
+async def train_cards_handler(message: Message, db: AsyncSession):
+    card_service = CardService(db)
     user_id = str(message.from_user.id)
 
     card, is_flipped = await card_service.start_training_session(user_id)

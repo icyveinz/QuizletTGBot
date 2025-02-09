@@ -1,4 +1,4 @@
-from db_core_layer.db_config import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 from entity_layer.states_enum import StatesEnum
 from repository_layer.card_repository import CardRepository
 from repository_layer.user_repository import UserRepository
@@ -6,10 +6,10 @@ from service_layer.card_button_service import CardButtonService
 
 
 class CardService:
-    def __init__(self):
-        self.card_repo = CardRepository(get_db())
-        self.user_repo = UserRepository(get_db())
-        self.button_service = CardButtonService()
+    def __init__(self, db: AsyncSession):
+        self.card_repo = CardRepository(db)
+        self.user_repo = UserRepository(db)
+        self.button_service = CardButtonService(db)
 
     async def user_has_cards(self, user_id: str) -> bool:
         return await self.card_repo.user_has_cards(user_id)

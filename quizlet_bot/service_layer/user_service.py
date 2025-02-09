@@ -1,10 +1,10 @@
-from db_core_layer.db_config import get_db
+from sqlalchemy.ext.asyncio import AsyncSession
 from repository_layer.user_repository import UserRepository
 
 
 class UserService:
-    def __init__(self):
-        self.user_repo = UserRepository(get_db())
+    def __init__(self, db: AsyncSession):
+        self.user_repo = UserRepository(db)
 
     async def ensure_user_state(self, user_id: str):
         user_state = await self.user_repo.get_user(user_id)
