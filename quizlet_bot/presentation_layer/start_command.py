@@ -8,6 +8,7 @@ from ui_layer.start_command_keyboards import StartCommandKeyboards
 
 router = Router()
 
+
 @router.message(CommandStart())
 async def start_command(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
@@ -28,4 +29,3 @@ async def start_command(message: Message, db: AsyncSession):
 
     await message.reply(response_text, reply_markup=keyboard)
     await user_service.ensure_user_state(user_id)
-

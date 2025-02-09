@@ -13,4 +13,6 @@ class MyMiddleware(BaseMiddleware):
     ) -> Any:
         async for db in get_db():  # Fetch DB session
             data["db"] = db  # Inject session into handler data
-            return await handler(event, data)  # Pass data to the next middleware/handler
+            return await handler(
+                event, data
+            )  # Pass data to the next middleware/handler

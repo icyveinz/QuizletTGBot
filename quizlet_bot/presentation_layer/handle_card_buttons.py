@@ -22,7 +22,9 @@ async def handle_flip_card_button(callback_query: CallbackQuery, db: AsyncSessio
 
 
 @router.callback_query(CallbackCardsTrainerMarkStudiedCondition())
-async def handle_mark_studied_card_button(callback_query: CallbackQuery, db: AsyncSession):
+async def handle_mark_studied_card_button(
+    callback_query: CallbackQuery, db: AsyncSession
+):
     card_service = CardService(db)
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)

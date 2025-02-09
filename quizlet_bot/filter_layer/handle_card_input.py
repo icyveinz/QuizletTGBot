@@ -3,6 +3,7 @@ from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 from repository_layer.user_repository import UserRepository
 
+
 class HandleCardInputFilter(BaseFilter):
     def __init__(self, expected_state: str):
         self.expected_state = expected_state
