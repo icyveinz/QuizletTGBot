@@ -1,16 +1,20 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.exc import OperationalError
 
-# Database URL for async connection
-db_url = "mysql+aiomysql://myuser:mypassword@db:3306/user_management"
+DATABASE_URL = "postgresql+asyncpg://user:password@db:5432/applications_db"
 
-# Create the async engine
-engine = create_async_engine(db_url, echo=True)
+engine = create_async_engine(DATABASE_URL)
+SessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
-# Base for declarative models
 Base = declarative_base()
 
-# Async session maker
-AsyncSessionLocal = async_sessionmaker(
-    bind=engine, class_=AsyncSession, autocommit=False, autoflush=False
-)
+
+async def init_db():
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("Database initialized successfully")
+    except OperationalError as e:
+        print(f"Failed to initialize the database: {e}")
+        raise

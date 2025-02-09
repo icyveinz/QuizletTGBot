@@ -1,15 +1,14 @@
 version: "3.4"
 services:
   db:
-    image: mysql:8
+    image: postgres:15
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: myuser
-      MYSQL_PASSWORD: mypassword
-      MYSQL_DATABASE: user_management
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: applications_db
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - ./postgres_data:/var/lib/postgresql/data
     networks:
       - combined-network
   quizlet_bot:
