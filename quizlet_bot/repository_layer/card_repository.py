@@ -52,7 +52,9 @@ class CardRepository:
             await self.db.rollback()
             return 0
 
-    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Optional[Card]:
+    async def create_card(
+        self, user_id: str, front_side: str, back_side: str
+    ) -> Optional[Card]:
         try:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
             self.db.add(new_card)
@@ -81,7 +83,9 @@ class CardRepository:
             await self.db.rollback()
             return False
 
-    async def get_unstudied_cards(self, user_id: str, seen_cards_ids: List[int]) -> Optional[Card]:
+    async def get_unstudied_cards(
+        self, user_id: str, seen_cards_ids: List[int]
+    ) -> Optional[Card]:
         try:
             result = await self.db.execute(
                 select(Card).filter(

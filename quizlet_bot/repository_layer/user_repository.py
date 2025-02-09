@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from entity_layer.states_enum import StatesEnum
 from entity_layer.user_state import UserStateEntity
 
+
 class UserRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -19,9 +20,13 @@ class UserRepository:
             print(f"Database error while getting user: {e}")
             return None
 
-    async def create_user(self, user_id: str, is_card_flipped: bool) -> Optional[UserStateEntity]:
+    async def create_user(
+        self, user_id: str, is_card_flipped: bool
+    ) -> Optional[UserStateEntity]:
         try:
-            new_state = UserStateEntity(user_id=user_id, is_card_flipped=is_card_flipped)
+            new_state = UserStateEntity(
+                user_id=user_id, is_card_flipped=is_card_flipped
+            )
             self.db.add(new_state)
             await self.db.commit()
             return new_state
