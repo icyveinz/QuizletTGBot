@@ -1,4 +1,6 @@
 from aiogram.filters import BaseFilter
+
+from db_core_layer.db_config import get_db
 from entity_layer.states_enum import StatesEnum
 from repository_layer.user_repository import UserRepository
 from aiogram.types import CallbackQuery
@@ -8,7 +10,7 @@ class CallbackCardsTrainerFlipCondition(BaseFilter):
     async def __call__(self, callback_query: CallbackQuery) -> bool:
         user_id = str(callback_query.from_user.id)
         try:
-            user_repo = UserRepository()
+            user_repo = UserRepository(get_db())
             user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("FLIP:")
@@ -24,7 +26,7 @@ class CallbackCardsTrainerMarkStudiedCondition(BaseFilter):
     async def __call__(self, callback_query: CallbackQuery) -> bool:
         user_id = str(callback_query.from_user.id)
         try:
-            user_repo = UserRepository()
+            user_repo = UserRepository(get_db())
             user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("MARK_STUDIED:")
@@ -40,7 +42,7 @@ class CallbackCardsTrainerNextCondition(BaseFilter):
     async def __call__(self, callback_query: CallbackQuery) -> bool:
         user_id = str(callback_query.from_user.id)
         try:
-            user_repo = UserRepository()
+            user_repo = UserRepository(get_db())
             user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("NEXT:")

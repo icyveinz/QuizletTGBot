@@ -1,3 +1,4 @@
+from db_core_layer.db_config import get_db
 from repository_layer.card_repository import CardRepository
 from repository_layer.user_repository import UserRepository
 from ui_layer.trainer_keyboards import TrainerKeyboards
@@ -5,13 +6,10 @@ from ui_layer.trainer_keyboards import TrainerKeyboards
 
 class CardButtonService:
     def __init__(self):
-        self.card_repo = CardRepository()
-        self.user_state_repo = UserRepository()
+        self.card_repo = CardRepository(get_db())
+        self.user_state_repo = UserRepository(get_db())
 
     async def prepare_next_card(self, user_id: str):
-        await self.card_repo.init_db()
-        await self.user_state_repo.init_db()
-
         user_state = await self.user_state_repo.get_user(user_id)
         seen_cards_ids = user_state.get_seen_cards()
 
@@ -23,9 +21,6 @@ class CardButtonService:
         return card, keyboard
 
     async def handle_next_button(self, card_id: int, user_id: str):
-        await self.card_repo.init_db()
-        await self.user_state_repo.init_db()
-
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card or not user_state:
@@ -33,8 +28,6 @@ class CardButtonService:
         return await self.prepare_next_card(user_id)
 
     async def handle_mark_studied_button(self, card_id: int):
-        await self.card_repo.init_db()
-
         card = await self.card_repo.get_card(card_id)
         if not card:
             return {"message": "Card not found!"}
@@ -45,9 +38,6 @@ class CardButtonService:
         return {"message": "Card marked as studied!"}
 
     async def handle_flip_button(self, card_id: int, user_id: str):
-        await self.card_repo.init_db()
-        await self.user_state_repo.init_db()
-
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card or not user_state:
