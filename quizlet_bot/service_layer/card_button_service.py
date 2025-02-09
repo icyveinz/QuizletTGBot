@@ -38,8 +38,10 @@ class CardButtonService:
         return {"message": "Card marked as studied!"}
 
     async def handle_flip_button(self, card_id: int, user_id: str):
+        print(user_id)
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
+        print(card, user_state)
         if not card or not user_state:
             return {"message": "Card or user state not found!"}
 

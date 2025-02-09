@@ -14,10 +14,11 @@ router = Router()
 
 @router.callback_query(CallbackCardsTrainerFlipCondition())
 async def handle_flip_card_button(callback_query: CallbackQuery, db: AsyncSession):
+    user_id = str(callback_query.from_user.id)
     card_service = CardService(db)
-    action, card_id = callback_query.data.split(":")
+    _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
-    response = await card_service.handle_callback_flip_card_action(card_id, action)
+    response = await card_service.handle_callback_flip_card_action(card_id, user_id)
     await callback_query.answer(response["message"])
 
 
@@ -34,8 +35,9 @@ async def handle_mark_studied_card_button(
 
 @router.callback_query(CallbackCardsTrainerNextCondition())
 async def handle_next_card_button(callback_query: CallbackQuery, db: AsyncSession):
+    user_id = str(callback_query.from_user.id)
     card_service = CardService(db)
-    action, card_id = callback_query.data.split(":")
+    _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
-    response = await card_service.handle_callback_next_card_action(card_id, action)
+    response = await card_service.handle_callback_next_card_action(card_id, user_id)
     await callback_query.answer(response["message"])
