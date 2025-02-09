@@ -19,18 +19,14 @@ class CardButtonService:
         keyboard = TrainerKeyboards.create_card_buttons(card.id, False)
         return card, keyboard
 
-    async def handle_next_button(
-        self, card_id: int, user_id: str
-    ):
+    async def handle_next_button(self, card_id: int, user_id: str):
         card = self.card_repo.get_card(card_id)
         user_state = self.user_state_repo.get_user(user_id)
         if not card or not user_state:
             return {"message": "Card or user state not found!"}
         return await self.prepare_next_card(user_id)
 
-    async def handle_mark_studied_button(
-        self, card_id: int
-    ):
+    async def handle_mark_studied_button(self, card_id: int):
         card = self.card_repo.get_card(card_id)
         if not card:
             return {"message": "Card or user state not found!"}
@@ -38,14 +34,14 @@ class CardButtonService:
         self.card_repo.update_card(card)
         return {"message": "Card marked as studied!"}
 
-    async def handle_flip_button(
-        self, card_id: int, user_id: str
-    ):
+    async def handle_flip_button(self, card_id: int, user_id: str):
         card = self.card_repo.get_card(card_id)
         user_state = self.user_state_repo.get_user(user_id)
         if not card or not user_state:
             return {"message": "Card or user state not found!"}
         user_state.is_card_flipped = not user_state.is_card_flipped
         text = card.back_side if user_state.is_card_flipped else card.front_side
-        keyboard = TrainerKeyboards.create_card_buttons(card.id, user_state.is_card_flipped)
+        keyboard = TrainerKeyboards.create_card_buttons(
+            card.id, user_state.is_card_flipped
+        )
         return {"message": text, "keyboard": keyboard}

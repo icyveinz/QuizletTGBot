@@ -1,7 +1,10 @@
 from aiogram import Bot, Router
 from aiogram.types import CallbackQuery
-from filter_layer.callback_cards_trainer import CallbackCardsTrainerFlipCondition, \
-    CallbackCardsTrainerMarkStudiedCondition, CallbackCardsTrainerNextCondition
+from filter_layer.callback_cards_trainer import (
+    CallbackCardsTrainerFlipCondition,
+    CallbackCardsTrainerMarkStudiedCondition,
+    CallbackCardsTrainerNextCondition,
+)
 from service_layer.card_service import CardService
 
 router = Router()
