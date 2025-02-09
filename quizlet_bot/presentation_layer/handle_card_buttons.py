@@ -1,4 +1,4 @@
-from aiogram import Bot, Router
+from aiogram import Router
 from aiogram.types import CallbackQuery
 from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerFlipCondition,

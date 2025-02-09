@@ -1,18 +1,13 @@
-from typing import Type
 from sqlalchemy import Engine
-from sqlalchemy.orm import DeclarativeBase
-from db_core_layer.db_config import SessionLocal, Base
+from db_core_layer.db_config import Base, AsyncSessionLocal
 
 
-def create_tables(engine: Engine):
-    """Create tables in the database."""
-    Base.metadata.create_all(bind=engine)
+async def create_tables(engine: Engine):
+    """Create tables in the database asynchronously."""
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-
-def get_db():
-    """Provide a session to interact with the database."""
-    db = SessionLocal()
-    try:
+async def get_db():
+    """Provide an asynchronous session to interact with the database."""
+    async with AsyncSessionLocal() as db:
         yield db
-    finally:
-        db.close()

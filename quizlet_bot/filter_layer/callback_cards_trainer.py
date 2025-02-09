@@ -9,7 +9,7 @@ class CallbackCardsTrainerFlipCondition(BaseFilter):
         user_id = str(callback_query.from_user.id)
         try:
             user_repo = UserRepository()
-            user_state = user_repo.get_user(user_id).state
+            user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("FLIP:")
                 and user_state == StatesEnum.TRAINS_CARDS.value
@@ -25,7 +25,7 @@ class CallbackCardsTrainerMarkStudiedCondition(BaseFilter):
         user_id = str(callback_query.from_user.id)
         try:
             user_repo = UserRepository()
-            user_state = user_repo.get_user(user_id).state
+            user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("MARK_STUDIED:")
                 and user_state == StatesEnum.TRAINS_CARDS.value
@@ -41,7 +41,7 @@ class CallbackCardsTrainerNextCondition(BaseFilter):
         user_id = str(callback_query.from_user.id)
         try:
             user_repo = UserRepository()
-            user_state = user_repo.get_user(user_id).state
+            user_state = (await user_repo.get_user(user_id)).state
             if (
                 callback_query.data.startswith("NEXT:")
                 and user_state == StatesEnum.TRAINS_CARDS.value

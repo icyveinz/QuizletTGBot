@@ -1,7 +1,5 @@
 from aiogram.filters import BaseFilter
 from aiogram.types import Message
-
-from entity_layer.states_enum import StatesEnum
 from repository_layer.user_repository import UserRepository
 
 
@@ -13,7 +11,7 @@ class HandleCardInputFilter(BaseFilter):
         user_id = str(message.from_user.id)
         try:
             user_repo = UserRepository()
-            user_state = user_repo.get_user(user_id).state
+            user_state = (await user_repo.get_user(user_id)).state
             return user_state == self.expected_state
         except Exception as e:
             print(f"Error in HandleCardInputFilter: {e}")
