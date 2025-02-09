@@ -18,8 +18,15 @@ async def handle_flip_card_button(callback_query: CallbackQuery, db: AsyncSessio
     card_service = CardService(db)
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
+
     response = await card_service.handle_callback_flip_card_action(card_id, user_id)
-    await callback_query.answer(response["message"])
+
+    if "message" in response:
+        text = response["message"]
+        keyboard = response["keyboard"]
+
+        await callback_query.message.edit_text(text, reply_markup=keyboard)
+        await callback_query.answer()
 
 
 @router.callback_query(CallbackCardsTrainerMarkStudiedCondition())
