@@ -11,12 +11,10 @@ class CardRepository:
 
     async def user_has_cards(self, user_id: str) -> bool:
         async with self.db() as session:
-            result = await session.execute(
-                select(Card).filter(Card.user_id == user_id)
-            )
+            result = await session.execute(select(Card).filter(Card.user_id == user_id))
             return result.scalars().count() > 0
 
-    async def get_user_cards(self, user_id: str) -> List['Card']:
+    async def get_user_cards(self, user_id: str) -> List["Card"]:
         try:
             async with self.db() as session:
                 result = await session.execute(
@@ -44,7 +42,9 @@ class CardRepository:
                 result = await session.execute(
                     select(Card).filter_by(user_id=user_id, is_studied=True)
                 )
-                updated_rows = result.update({"is_studied": False}, synchronize_session="fetch")
+                updated_rows = result.update(
+                    {"is_studied": False}, synchronize_session="fetch"
+                )
                 await session.commit()
                 return updated_rows
         except SQLAlchemyError as e:
@@ -52,7 +52,9 @@ class CardRepository:
             await session.rollback()
             return 0
 
-    async def create_card(self, user_id: str, front_side: str, back_side: str) -> 'Card':
+    async def create_card(
+        self, user_id: str, front_side: str, back_side: str
+    ) -> "Card":
         async with self.db() as session:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
             session.add(new_card)
@@ -61,16 +63,16 @@ class CardRepository:
 
     async def get_card(self, card_id: int) -> Optional[Card]:
         async with self.db() as session:
-            result = await session.execute(
-                select(Card).filter_by(id=card_id)
-            )
+            result = await session.execute(select(Card).filter_by(id=card_id))
             return result.scalars().first()
 
     async def update_card(self, card: Card) -> None:
         async with self.db() as session:
             await session.commit()
 
-    async def get_unstudied_cards(self, user_id: str, seen_cards_ids: List[int]) -> Optional['Card']:
+    async def get_unstudied_cards(
+        self, user_id: str, seen_cards_ids: List[int]
+    ) -> Optional["Card"]:
         async with self.db() as session:
             result = await session.execute(
                 select(Card).filter(

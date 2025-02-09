@@ -18,7 +18,9 @@ class UserRepository:
 
     async def create_user(self, user_id: str, is_card_flipped: bool):
         async with self.db() as session:
-            new_state = UserStateEntity(user_id=user_id, is_card_flipped=is_card_flipped)
+            new_state = UserStateEntity(
+                user_id=user_id, is_card_flipped=is_card_flipped
+            )
             session.add(new_state)
             await session.commit()
             return new_state

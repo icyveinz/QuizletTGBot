@@ -9,9 +9,11 @@ from db_core_layer.db_repository import create_tables
 from db_core_layer.db_utils import initialize_database
 from register_handlers import register_handlers
 
+
 async def init_db():
     await initialize_database(engine=engine)
     await create_tables(engine=engine)
+
 
 TOKEN = "6907074579:AAFJOtvMEDN8ewOVP4XnxOxWyZY-OTjLXXM"
 
