@@ -1,99 +1,89 @@
-from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.future import select
 from typing import List, Optional
-from db_core_layer.db_repository import get_db
 from entity_layer.card import Card
 
 
 class CardRepository:
-    def __init__(self):
-        self.db = None
-
-    async def init_db(self):
-        async for session in get_db():
-            self.db = session
-            break
+    def __init__(self, db: AsyncSession):
+        self.db = db
 
     async def user_has_cards(self, user_id: str) -> bool:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
-        async with self.db() as session:
-            result = await session.execute(select(Card).filter(Card.user_id == user_id))
-            return result.scalars().count() > 0
+        try:
+            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
+            return result.scalars().first() is not None
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            return False
 
     async def get_user_cards(self, user_id: str) -> List[Card]:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
         try:
-            async with self.db() as session:
-                result = await session.execute(
-                    select(Card).filter(Card.user_id == user_id)
-                )
-                return result.scalars().all()
+            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
+            return list(result.scalars())
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return []
 
     async def get_next_unstudied_card(self, user_id: str) -> Optional[Card]:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
         try:
-            async with self.db() as session:
-                result = await session.execute(
-                    select(Card).filter_by(user_id=user_id, is_studied=False)
-                )
-                return result.scalars().first()
+            result = await self.db.execute(
+                select(Card).filter_by(user_id=user_id, is_studied=False)
+            )
+            return result.scalars().first()
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return None
 
     async def reset_studied_cards(self, user_id: str) -> int:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
         try:
-            async with self.db() as session:
-                result = await session.execute(
-                    select(Card).filter_by(user_id=user_id, is_studied=True)
-                )
-                updated_rows = result.update(
-                    {"is_studied": False}, synchronize_session="fetch"
-                )
-                await session.commit()
-                return updated_rows
+            result = await self.db.execute(
+                select(Card).filter_by(user_id=user_id, is_studied=True)
+            )
+            cards_to_update = result.scalars().all()
+            if cards_to_update:
+                for card in cards_to_update:
+                    card.is_studied = False
+                await self.db.commit()
+                return len(cards_to_update)
+            return 0
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
-            await session.rollback()
+            await self.db.rollback()
             return 0
 
-    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Card:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
-        async with self.db() as session:
+    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Optional[Card]:
+        try:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
-            session.add(new_card)
-            await session.commit()
+            self.db.add(new_card)
+            await self.db.commit()
             return new_card
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            await self.db.rollback()
+            return None
 
     async def get_card(self, card_id: int) -> Optional[Card]:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
-        async with self.db() as session:
-            result = await session.execute(select(Card).filter_by(id=card_id))
+        try:
+            result = await self.db.execute(select(Card).filter_by(id=card_id))
             return result.scalars().first()
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            return None
 
-    async def update_card(self, card: "Card") -> None:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
-        async with self.db() as session:
-            await session.commit()
+    async def update_card(self, card: Card) -> bool:
+        try:
+            self.db.add(card)
+            await self.db.commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            await self.db.rollback()
+            return False
 
-    async def get_unstudied_cards(
-        self, user_id: str, seen_cards_ids: List[int]
-    ) -> Optional[Card]:
-        if self.db is None:
-            raise Exception("Database session not initialized.")
-        async with self.db() as session:
-            result = await session.execute(
+    async def get_unstudied_cards(self, user_id: str, seen_cards_ids: List[int]) -> Optional[Card]:
+        try:
+            result = await self.db.execute(
                 select(Card).filter(
                     Card.user_id == user_id,
                     ~Card.id.in_(seen_cards_ids),
@@ -101,3 +91,6 @@ class CardRepository:
                 )
             )
             return result.scalars().first()
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            return None

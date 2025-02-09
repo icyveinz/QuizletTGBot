@@ -18,3 +18,8 @@ async def init_db():
     except OperationalError as e:
         print(f"Failed to initialize the database: {e}")
         raise
+
+
+async def get_db():
+    async with SessionLocal() as session:
+        yield session
