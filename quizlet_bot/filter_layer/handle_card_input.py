@@ -4,6 +4,7 @@ from aiogram.types import Message
 from entity_layer.states_enum import StatesEnum
 from repository_layer.user_repository import UserRepository
 
+
 class HandleCardInputFilter(BaseFilter):
     def __init__(self, expected_state: str):
         self.expected_state = expected_state
