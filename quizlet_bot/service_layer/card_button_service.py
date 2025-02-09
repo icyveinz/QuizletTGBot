@@ -10,7 +10,7 @@ class CardButtonService:
         self.user_state_repo = UserRepository()
 
     async def prepare_next_card(self, user_id: str):
-        user_state = self.user_state_repo.get_user_state(user_id)
+        user_state = self.user_state_repo.get_user(user_id)
         seen_cards_ids = user_state.get_seen_cards()
 
         card = self.card_repo.get_unstudied_cards(user_id, seen_cards_ids)
@@ -24,7 +24,7 @@ class CardButtonService:
         self, action: str, card_id: int, user_id: str, bot: Bot
     ):
         card = self.card_repo.get_card(card_id)
-        user_state = self.user_state_repo.get_user_state(user_id)
+        user_state = self.user_state_repo.get_user(user_id)
 
         if not card or not user_state:
             return {"message": "Card or user state not found!"}

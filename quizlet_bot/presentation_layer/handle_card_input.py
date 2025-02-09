@@ -1,8 +1,8 @@
 from aiogram import Router
 from aiogram.types import Message
+from entity_layer.states_enum import StatesEnum
 from filter_layer.handle_card_input import (
-    HandleFrontCardInputFilter,
-    HandleBackCardInputFilter,
+    HandleCardInputFilter,
 )
 from service_layer.card_service import CardService
 
@@ -10,7 +10,7 @@ router = Router()
 card_service = CardService()
 
 
-@router.message(HandleFrontCardInputFilter())
+@router.message(HandleCardInputFilter(StatesEnum.AWAITING_FRONT.value))
 async def handle_card_input(message: Message):
     user_id = str(message.from_user.id)
     text = message.text.strip()
@@ -20,7 +20,7 @@ async def handle_card_input(message: Message):
     await message.reply(response)
 
 
-@router.message(HandleBackCardInputFilter())
+@router.message(HandleCardInputFilter(StatesEnum.AWAITING_BACK.value))
 async def handle_back_card_input(message: Message):
     user_id = str(message.from_user.id)
     text = message.text.strip()
