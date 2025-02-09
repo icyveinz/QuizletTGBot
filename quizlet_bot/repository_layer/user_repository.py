@@ -7,9 +7,16 @@ from entity_layer.user_state import UserStateEntity
 
 class UserRepository:
     def __init__(self):
-        self.db = next(get_db())
+        self.db = None
+
+    async def init_db(self):
+        async for session in get_db():
+            self.db = session
+            break
 
     async def get_user(self, user_id: str):
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             result = await session.execute(
                 select(UserStateEntity).filter_by(user_id=user_id)
@@ -17,6 +24,8 @@ class UserRepository:
             return result.scalars().first()
 
     async def create_user(self, user_id: str, is_card_flipped: bool):
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             new_state = UserStateEntity(
                 user_id=user_id, is_card_flipped=is_card_flipped
@@ -26,6 +35,8 @@ class UserRepository:
             return new_state
 
     async def reset_user(self, user_id: str):
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             user_state = await self.get_user(user_id)
             if user_state:
@@ -35,6 +46,8 @@ class UserRepository:
 
     async def update_user_state(self, user_id: str, state: str) -> bool:
         try:
+            if self.db is None:
+                raise Exception("Database session not initialized.")
             async with self.db() as session:
                 user_state = await self.get_user(user_id)
                 if user_state:
@@ -48,6 +61,8 @@ class UserRepository:
 
     async def update_user_with_front_card(self, user_id: str, front: str) -> bool:
         try:
+            if self.db is None:
+                raise Exception("Database session not initialized.")
             async with self.db() as session:
                 user_state = await self.get_user(user_id)
                 if user_state:

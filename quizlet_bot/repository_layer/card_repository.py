@@ -7,14 +7,25 @@ from entity_layer.card import Card
 
 class CardRepository:
     def __init__(self):
-        self.db = next(get_db())
+        self.db = None
+
+    async def init_db(self):
+        async for session in get_db():
+            self.db = session
+            break
 
     async def user_has_cards(self, user_id: str) -> bool:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
-            result = await session.execute(select(Card).filter(Card.user_id == user_id))
+            result = await session.execute(
+                select(Card).filter(Card.user_id == user_id)
+            )
             return result.scalars().count() > 0
 
-    async def get_user_cards(self, user_id: str) -> List["Card"]:
+    async def get_user_cards(self, user_id: str) -> List[Card]:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         try:
             async with self.db() as session:
                 result = await session.execute(
@@ -26,6 +37,8 @@ class CardRepository:
             return []
 
     async def get_next_unstudied_card(self, user_id: str) -> Optional[Card]:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         try:
             async with self.db() as session:
                 result = await session.execute(
@@ -37,6 +50,8 @@ class CardRepository:
             return None
 
     async def reset_studied_cards(self, user_id: str) -> int:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         try:
             async with self.db() as session:
                 result = await session.execute(
@@ -54,7 +69,9 @@ class CardRepository:
 
     async def create_card(
         self, user_id: str, front_side: str, back_side: str
-    ) -> "Card":
+    ) -> Card:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
             session.add(new_card)
@@ -62,17 +79,23 @@ class CardRepository:
             return new_card
 
     async def get_card(self, card_id: int) -> Optional[Card]:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             result = await session.execute(select(Card).filter_by(id=card_id))
             return result.scalars().first()
 
-    async def update_card(self, card: Card) -> None:
+    async def update_card(self, card: "Card") -> None:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             await session.commit()
 
     async def get_unstudied_cards(
         self, user_id: str, seen_cards_ids: List[int]
-    ) -> Optional["Card"]:
+    ) -> Optional[Card]:
+        if self.db is None:
+            raise Exception("Database session not initialized.")
         async with self.db() as session:
             result = await session.execute(
                 select(Card).filter(
