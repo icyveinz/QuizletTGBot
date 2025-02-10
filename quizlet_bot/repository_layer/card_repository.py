@@ -65,6 +65,20 @@ class CardRepository:
             await self.db.rollback()
             return None
 
+    async def create_cards(self, user_id: str, cards: List[tuple[str, str]]) -> bool:
+        try:
+            new_cards = [
+                Card(user_id=user_id, front_side=front, back_side=back)
+                for front, back in cards
+            ]
+            self.db.add_all(new_cards)
+            await self.db.commit()
+            return True
+        except SQLAlchemyError as e:
+            print(f"Database error: {e}")
+            await self.db.rollback()
+            return False
+
     async def get_card(self, card_id: int) -> Optional[Card]:
         try:
             result = await self.db.execute(select(Card).filter_by(id=card_id))

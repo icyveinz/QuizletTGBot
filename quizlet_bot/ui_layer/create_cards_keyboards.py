@@ -13,3 +13,13 @@ class CreateCardsKeyboards:
         for button in buttons:
             kb_builder.row(button)
         return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
+    @staticmethod
+    def leave_mode_for_creating():
+        button_list = ["Завершить добавление"]
+        kb_builder = ReplyKeyboardBuilder()
+        buttons: list[KeyboardButton] = [
+            KeyboardButton(text=option) for option in button_list
+        ]
+        for button in buttons:
+            kb_builder.row(button)
+        return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)

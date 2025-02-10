@@ -16,3 +16,6 @@ class Card(Base):
     )
     is_studied = Column(Boolean, default=False)
     date = Column(DateTime, default=datetime.datetime.utcnow)
+
+
+
