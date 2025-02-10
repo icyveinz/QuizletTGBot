@@ -37,9 +37,7 @@ async def handle_mark_studied_card_button(
     card_service = CardButtonService(db)
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
-    response = await card_service.handle_mark_studied_button_callback(
-        card_id, user_id
-    )
+    response = await card_service.handle_mark_studied_button_callback(card_id, user_id)
     if "message" in response:
         text = response["message"]
         keyboard = response["keyboard"]
