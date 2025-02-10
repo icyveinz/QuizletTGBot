@@ -55,7 +55,7 @@ async def handle_add_auto_button(message: Message, db: AsyncSession):
 
 
 @router.message(F.text == "Завершить добавление", UserStateFilter(StatesEnum.UPLOADING_CARDS_SETS.value))
-async def handle_added_set(message: Message, db: AsyncSession):
+async def finish_adding_sets(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
     user_service = UserService(db)
     await user_service.update_user_state(user_id, StatesEnum.ZERO_STATE.value)
