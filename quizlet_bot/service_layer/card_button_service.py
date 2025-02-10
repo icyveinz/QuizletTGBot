@@ -44,7 +44,8 @@ class CardButtonService:
                 next_card.id, user_state.is_card_flipped
             )
             return {"message": next_card.front_side, "keyboard": keyboard}
-        return {"message": "You're out of cards"}
+        else:
+            return {"message": "Вы просмотрели все добавленные карты", "keyboard": None}
 
     async def handle_mark_studied_button(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
@@ -55,6 +56,7 @@ class CardButtonService:
         card.is_studied = True
         await self.card_repo.update_card(card)
 
+        await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
         seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
             user_id
         )
@@ -67,6 +69,8 @@ class CardButtonService:
                 next_card.id, user_state.is_card_flipped
             )
             return {"message": next_card.front_side, "keyboard": keyboard}
+        else:
+            return {"message": "Вы выучили все карты! поздравляем!", "keyboard": None}
 
     async def handle_flip_button(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
