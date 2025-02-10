@@ -36,13 +36,11 @@ async def handle_create_cards_button(message: Message, db: AsyncSession):
     )
 
 
-@router.message(F.text == "Добавить вручную")
-@router.message(UserStateFilter(StatesEnum.CREATING_CARDS.value))
+@router.message(F.text == "Добавить вручную", UserStateFilter(StatesEnum.CREATING_CARDS.value))
 async def handle_add_manual_button(message: Message, db: AsyncSession):
     await message.reply(text="Выбран мануальный режим для загрузки")
 
 
-@router.message(F.text == "Загрузить пакетом")
-@router.message(UserStateFilter(StatesEnum.CREATING_CARDS.value))
+@router.message(F.text == "Загрузить пакетом", UserStateFilter(StatesEnum.CREATING_CARDS.value))
 async def handle_add_auto_button(message: Message, db: AsyncSession):
     await message.reply(text="Выбран автоматический режим для загрузки")
