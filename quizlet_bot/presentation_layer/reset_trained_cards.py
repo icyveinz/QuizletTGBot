@@ -12,6 +12,7 @@ async def reset_trained_cards_handler(message: Message, db: AsyncSession):
     card_service = CardService(db)
     user_id = str(message.from_user.id)
 
+    await card_service.reset_seen_cards(user_id)
     reset_count = await card_service.reset_studied_cards(user_id)
 
     if reset_count > 0:
