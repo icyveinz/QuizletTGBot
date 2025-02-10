@@ -18,7 +18,7 @@ class StartCommandKeyboards:
         ]
         for button in buttons:
             kb_builder.row(button)
-        return kb_builder.as_markup(resize_keyboard=True)
+        return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
     @staticmethod
     def start_creating_cards():
@@ -28,4 +28,4 @@ class StartCommandKeyboards:
             KeyboardButton(text=option) for option in button_list
         ]
         kb_builder.add(*buttons)
-        return kb_builder.as_markup(resize_keyboard=True)
+        return kb_builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
