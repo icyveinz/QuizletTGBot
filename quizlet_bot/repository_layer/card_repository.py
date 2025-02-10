@@ -83,20 +83,18 @@ class CardRepository:
             await self.db.rollback()
             return False
 
-    async def get_unstudied_card(self, user_id: str, seen_cards: list[Card]) -> Optional[Card]:
+    async def get_unstudied_card(
+        self, user_id: str, seen_cards: list[Card]
+    ) -> Optional[Card]:
         try:
-            result = await self.db.execute(
-                select(Card).filter(Card.user_id == user_id)
-            )
+            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
             cards = result.scalars().all()
             seen_card_ids = {card.id for card in list(seen_cards)}
             unstudied_cards = sorted(
                 (card for card in cards if card.id not in seen_card_ids),
-                key=lambda c: c.is_studied
+                key=lambda c: c.is_studied,
             )
             return unstudied_cards[0] if unstudied_cards else None
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return None
-
-

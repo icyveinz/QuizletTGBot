@@ -18,7 +18,6 @@ class CardButtonService:
         await self.user_state_repo.add_seen_card_to_column(user_id, str(card_id))
         seen_cards = await self.user_state_repo.get_list_of_seen_cards(user_id)
 
-
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
         text = next_card.back_side if user_state.is_card_flipped else card.front_side
 
