@@ -41,7 +41,7 @@ async def handle_add_manual_button(message: Message, db: AsyncSession):
 
 @router.message(F.text == "Загрузить пакетом")
 @router.message(UserStateFilter(StatesEnum.CREATING_CARDS.value))
-async def handle_add_manual_button(message: Message, db: AsyncSession):
+async def handle_add_auto_button(message: Message, db: AsyncSession):
     await message.reply(text="Выбран автоматический режим для загрузки")
 
 
