@@ -62,6 +62,19 @@ class UserRepository:
             await self.db.rollback()
             return False
 
+    async def toggle_user_is_card_flipped(self, user_id: str) -> bool:
+        try:
+            user_state = await self.get_user(user_id)
+            if user_state:
+                user_state.is_card_flipped = not user_state.is_card_flipped
+                await self.db.commit()
+                return True
+            return False
+        except SQLAlchemyError as e:
+            print(f"Database error while toggling user state: {e}")
+            await self.db.rollback()
+            return False
+
     async def update_user_with_front_card(self, user_id: str, front: str) -> bool:
         try:
             user_state = await self.get_user(user_id)

@@ -43,7 +43,8 @@ class CardButtonService:
         if not card or not user_state:
             return {"message": "Card or user state not found!"}
 
-        user_state.is_card_flipped = not user_state.is_card_flipped
+        await self.user_state_repo.toggle_user_is_card_flipped(user_id)
+
         text = card.back_side if user_state.is_card_flipped else card.front_side
 
         keyboard = TrainerKeyboards.create_card_buttons(
