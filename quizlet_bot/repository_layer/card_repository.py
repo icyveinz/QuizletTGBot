@@ -84,17 +84,19 @@ class CardRepository:
             return False
 
     async def get_unstudied_card(
-        self, user_id: str, seen_cards: list[Card]
+            self, user_id: str, seen_cards: list[int]
     ) -> Optional[Card]:
         try:
-            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
-            cards = result.scalars().all()
-            seen_card_ids = {card.id for card in list(seen_cards)}
-            unstudied_cards = sorted(
-                (card for card in cards if card.id not in seen_card_ids),
-                key=lambda c: c.is_studied,
+            seen_card_ids = set(seen_cards)
+
+            result = await self.db.execute(
+                select(Card)
+                .filter(Card.user_id == user_id, Card.id.notin_(seen_card_ids))
+                .order_by(Card.is_studied.asc())
             )
-            return unstudied_cards[0] if unstudied_cards else None
+
+            unstudied_card = result.scalars().first()
+            return unstudied_card
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return None

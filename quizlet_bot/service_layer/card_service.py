@@ -1,15 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from entity_layer.states_enum import StatesEnum
 from repository_layer.card_repository import CardRepository
+from repository_layer.seen_cards_repository import SeenCardsRepository
 from repository_layer.user_repository import UserRepository
-from service_layer.card_button_service import CardButtonService
 
 
 class CardService:
     def __init__(self, db: AsyncSession):
         self.card_repo = CardRepository(db)
         self.user_repo = UserRepository(db)
-        self.button_service = CardButtonService(db)
+        self.seen_cards_repo = SeenCardsRepository(db)
 
     async def user_has_cards(self, user_id: str) -> bool:
         return await self.card_repo.user_has_cards(user_id)
@@ -43,14 +43,5 @@ class CardService:
         await self.user_repo.reset_user(user_id)
         return f"<b>Карта была создана!</b>\n<i>Передняя сторона:</i> {front}\n<i>Задняя сторона:</i> {text}"
 
-    async def handle_callback_flip_card_action(self, card_id: int, user_id: str):
-        result = await self.button_service.handle_flip_button(card_id, user_id)
-        return result
-
-    async def handle_callback_next_card_action(self, card_id: int, user_id: str):
-        result = await self.button_service.handle_next_button(card_id, user_id)
-        return result
-
-    async def handle_callback_mark_studied_card_action(self, card_id: int):
-        result = await self.button_service.handle_mark_studied_button(card_id)
-        return result
+    async def reset_seen_cards(self, user_id: str):
+        await self.seen_cards_repo.clean_seen_cards_by_user_id(user_id)

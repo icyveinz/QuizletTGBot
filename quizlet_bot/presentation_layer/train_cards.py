@@ -12,6 +12,7 @@ async def train_cards_handler(message: Message, db: AsyncSession):
     card_service = CardService(db)
     user_id = str(message.from_user.id)
 
+    await card_service.reset_seen_cards(user_id)
     card, is_flipped = await card_service.start_training_session(user_id)
 
     if not card:

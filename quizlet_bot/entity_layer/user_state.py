@@ -12,4 +12,3 @@ class UserStateEntity(Base):
         Integer, ForeignKey("cards.id"), default=None, nullable=True
     )
     is_card_flipped = Column(Boolean, default=False, nullable=False)
-    seen_card_ids = Column(Text, default="", nullable=False)
