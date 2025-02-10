@@ -11,21 +11,7 @@ class CardButtonService:
         self.user_state_repo = UserRepository(db)
         self.seen_cards_repo = SeenCardsRepository(db)
 
-    async def handle_callback_flip_card_action(self, card_id: int, user_id: str):
-        result = await self.handle_flip_button(card_id, user_id)
-        return result
-
-    async def handle_callback_next_card_action(self, card_id: int, user_id: str):
-        result = await self.handle_next_button(card_id, user_id)
-        return result
-
-    async def handle_callback_mark_studied_card_action(
-        self, card_id: int, user_id: str
-    ):
-        result = await self.handle_mark_studied_button(card_id, user_id)
-        return result
-
-    async def handle_next_button(self, card_id: int, user_id: str):
+    async def handle_next_button_callback(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card or not user_state:
@@ -47,7 +33,7 @@ class CardButtonService:
         else:
             return {"message": "Вы просмотрели все добавленные карты", "keyboard": None}
 
-    async def handle_mark_studied_button(self, card_id: int, user_id: str):
+    async def handle_mark_studied_button_callback(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card:
@@ -72,7 +58,7 @@ class CardButtonService:
         else:
             return {"message": "Вы выучили все карты! поздравляем!", "keyboard": None}
 
-    async def handle_flip_button(self, card_id: int, user_id: str):
+    async def handle_flip_button_callback(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card or not user_state:

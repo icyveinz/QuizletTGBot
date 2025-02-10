@@ -19,7 +19,7 @@ async def handle_flip_card_button(callback_query: CallbackQuery, db: AsyncSessio
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
 
-    response = await card_service.handle_callback_flip_card_action(card_id, user_id)
+    response = await card_service.handle_flip_button_callback(card_id, user_id)
 
     if "message" in response:
         text = response["message"]
@@ -37,7 +37,7 @@ async def handle_mark_studied_card_button(
     card_service = CardButtonService(db)
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
-    response = await card_service.handle_callback_mark_studied_card_action(
+    response = await card_service.handle_mark_studied_button_callback(
         card_id, user_id
     )
     if "message" in response:
@@ -54,7 +54,7 @@ async def handle_next_card_button(callback_query: CallbackQuery, db: AsyncSessio
     card_service = CardButtonService(db)
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
-    response = await card_service.handle_callback_next_card_action(card_id, user_id)
+    response = await card_service.handle_next_button_callback(card_id, user_id)
     if "message" in response:
         text = response["message"]
         keyboard = response["keyboard"]
