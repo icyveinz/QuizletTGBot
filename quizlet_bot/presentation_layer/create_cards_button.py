@@ -30,7 +30,10 @@ async def handle_create_cards_button(message: Message, db: AsyncSession):
 
     await user_service.update_user_state(user_id, StatesEnum.CREATING_CARDS.value)
 
-    await message.reply(text="Выберите режим с помощью которого хотели бы загрузить новые слова", reply_markup=CreateCardsKeyboards.select_mode_for_creating())
+    await message.reply(
+        text="Выберите режим с помощью которого хотели бы загрузить новые слова",
+        reply_markup=CreateCardsKeyboards.select_mode_for_creating(),
+    )
 
 
 @router.message(F.text == "Добавить вручную")
@@ -43,5 +46,3 @@ async def handle_add_manual_button(message: Message, db: AsyncSession):
 @router.message(UserStateFilter(StatesEnum.CREATING_CARDS.value))
 async def handle_add_auto_button(message: Message, db: AsyncSession):
     await message.reply(text="Выбран автоматический режим для загрузки")
-
-

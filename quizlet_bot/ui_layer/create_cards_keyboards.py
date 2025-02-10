@@ -5,10 +5,7 @@ from aiogram.utils.keyboard import ReplyKeyboardBuilder
 class CreateCardsKeyboards:
     @staticmethod
     def select_mode_for_creating():
-        button_list = [
-            "Добавить вручную",
-            "Загрузить пакетом"
-        ]
+        button_list = ["Добавить вручную", "Загрузить пакетом"]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
             KeyboardButton(text=option) for option in button_list
