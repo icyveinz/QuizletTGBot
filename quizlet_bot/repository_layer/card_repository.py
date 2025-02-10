@@ -84,7 +84,7 @@ class CardRepository:
             return False
 
     async def get_unstudied_card(
-            self, user_id: str, seen_cards: list[int]
+        self, user_id: str, seen_cards: list[int]
     ) -> Optional[Card]:
         try:
             seen_card_ids = set(seen_cards)

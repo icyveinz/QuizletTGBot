@@ -11,7 +11,6 @@ class CardButtonService:
         self.user_state_repo = UserRepository(db)
         self.seen_cards_repo = SeenCardsRepository(db)
 
-
     async def handle_callback_flip_card_action(self, card_id: int, user_id: str):
         result = await self.handle_flip_button(card_id, user_id)
         return result
@@ -31,12 +30,16 @@ class CardButtonService:
             return {"message": "Card or user state not found!"}
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
+            user_id
+        )
 
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
 
         if next_card:
-            text = next_card.back_side if user_state.is_card_flipped else card.front_side
+            text = (
+                next_card.back_side if user_state.is_card_flipped else card.front_side
+            )
             print(next_card.back_side, next_card.front_side)
             keyboard = TrainerKeyboards.create_card_buttons(
                 next_card.id, user_state.is_card_flipped

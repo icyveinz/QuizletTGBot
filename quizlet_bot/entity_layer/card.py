@@ -12,7 +12,7 @@ class Card(Base):
         String(50),
         ForeignKey("user_states.user_id", ondelete="CASCADE"),
         nullable=False,
-        index=True
+        index=True,
     )
     is_studied = Column(Boolean, default=False)
     date = Column(DateTime, default=datetime.datetime.utcnow)
