@@ -1,5 +1,6 @@
 MAX_MESSAGE_LENGTH = 4000  # Telegram's safe message size limit
 
+
 def chunk_message(text: str, max_length=MAX_MESSAGE_LENGTH):
     chunks = []
     while len(text) > max_length:

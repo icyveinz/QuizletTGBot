@@ -22,4 +22,6 @@ async def handle_view_cards_button(message: Message, db: AsyncSession):
         for chunk in message_chunks:
             await message.answer(chunk)
     else:
-        await message.answer("You don't have any cards yet. Use the 'Create Cards' button to add new cards.")
+        await message.answer(
+            "You don't have any cards yet. Use the 'Create Cards' button to add new cards."
+        )

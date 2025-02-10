@@ -47,11 +47,10 @@ class CardService:
     async def reset_seen_cards(self, user_id: str):
         await self.seen_cards_repo.clean_seen_cards_by_user_id(user_id)
 
-    async def add_user_set(self, user_id: str, text : str) -> str:
+    async def add_user_set(self, user_id: str, text: str) -> str:
         converted_cards = trim_content_to_cards(text)
         result = await self.card_repo.create_cards(user_id, converted_cards)
         if result:
             return f"<b>{len(converted_cards)} карт(ы) успешно добавлены!</b>"
         else:
             return "Произошла ошибка при добавлении карт."
-
