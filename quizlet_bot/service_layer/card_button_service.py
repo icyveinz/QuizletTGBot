@@ -19,7 +19,9 @@ class CardButtonService:
         result = await self.handle_next_button(card_id, user_id)
         return result
 
-    async def handle_callback_mark_studied_card_action(self, card_id: int, user_id: str):
+    async def handle_callback_mark_studied_card_action(
+        self, card_id: int, user_id: str
+    ):
         result = await self.handle_mark_studied_button(card_id, user_id)
         return result
 
