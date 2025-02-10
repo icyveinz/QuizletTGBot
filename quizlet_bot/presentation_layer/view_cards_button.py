@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 from service_layer.card_service import CardService
+from utilities.message_chunker import chunk_message
 
 router = Router()
 
@@ -17,7 +18,8 @@ async def handle_view_cards_button(message: Message, db: AsyncSession):
         response = "<b>Ваши добавленные карты:</b>\n\n"
         for index, card in enumerate(user_cards):
             response += f"{index + 1})\n<b>Аверс:</b> {card.front_side}\n<i>Реверс:</i> {card.back_side}\n\n"
+        message_chunks = chunk_message(response)
+        for chunk in message_chunks:
+            await message.answer(chunk)
     else:
-        response = "You don't have any cards yet. Use the 'Create Cards' button to add new cards."
-
-    await message.reply(response)
+        await message.answer("You don't have any cards yet. Use the 'Create Cards' button to add new cards.")

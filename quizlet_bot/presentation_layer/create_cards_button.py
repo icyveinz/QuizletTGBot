@@ -49,7 +49,10 @@ async def handle_add_auto_button(message: Message, db: AsyncSession):
         user_id, StatesEnum.UPLOADING_CARDS_SETS.value
     )
     if success:
-        await message.reply(text="Выбран автоматический режим для загрузки\nЗагрузите пары разделенные символом <b>'-.-'</b>\nКаждая новая строчка должна начинаться с новой строки")
+        await message.reply(text=
+                            "Выбран автоматический режим для загрузки"
+                            "\nЗагрузите пары разделенные символом <b>'-.-'</b>"
+                            "\nКаждая новая строчка должна начинаться с новой строки")
     else:
         await message.reply("Произошла ошибка, попробуйте позже")
 
@@ -59,7 +62,8 @@ async def finish_adding_sets(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
     user_service = UserService(db)
     await user_service.update_user_state(user_id, StatesEnum.ZERO_STATE.value)
-    await message.reply(text="Вы вышли из режима автоматического добавления карт", reply_markup=StartCommandKeyboards.start_creating_cards())
+    await message.reply(text="Вы вышли из режима автоматического добавления карт",
+                        reply_markup=StartCommandKeyboards.startup_card_builder())
 
 @router.message(UserStateFilter(StatesEnum.UPLOADING_CARDS_SETS.value))
 async def handle_added_set(message: Message, db: AsyncSession):
