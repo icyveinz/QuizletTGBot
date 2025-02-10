@@ -37,14 +37,11 @@ class CardButtonService:
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
 
         if next_card:
-            text = (
-                next_card.back_side if user_state.is_card_flipped else card.front_side
-            )
             print(next_card.back_side, next_card.front_side)
             keyboard = TrainerKeyboards.create_card_buttons(
                 next_card.id, user_state.is_card_flipped
             )
-            return {"message": text, "keyboard": keyboard}
+            return {"message": next_card.front_side, "keyboard": keyboard}
         return {"message": "You're out of cards"}
 
     async def handle_mark_studied_button(self, card_id: int):
