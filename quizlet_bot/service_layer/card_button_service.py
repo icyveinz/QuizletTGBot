@@ -9,23 +9,23 @@ class CardButtonService:
         self.card_repo = CardRepository(db)
         self.user_state_repo = UserRepository(db)
 
-    async def prepare_next_card(self, user_id: str):
-        user_state = await self.user_state_repo.get_user(user_id)
-        seen_cards_ids = user_state.get_seen_cards()
-
-        card = await self.card_repo.get_unstudied_cards(user_id, seen_cards_ids)
-        if not card:
-            return None, None
-
-        keyboard = TrainerKeyboards.create_card_buttons(card.id, False)
-        return card, keyboard
-
     async def handle_next_button(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
         user_state = await self.user_state_repo.get_user(user_id)
         if not card or not user_state:
             return {"message": "Card or user state not found!"}
-        return await self.prepare_next_card(user_id)
+
+        await self.user_state_repo.add_seen_card_to_column(user_id, str(card_id))
+        seen_cards = await self.user_state_repo.get_list_of_seen_cards(user_id)
+
+
+        next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
+        text = next_card.back_side if user_state.is_card_flipped else card.front_side
+
+        keyboard = TrainerKeyboards.create_card_buttons(
+            next_card.id, user_state.is_card_flipped
+        )
+        return {"message": text, "keyboard": keyboard}
 
     async def handle_mark_studied_button(self, card_id: int):
         card = await self.card_repo.get_card(card_id)
