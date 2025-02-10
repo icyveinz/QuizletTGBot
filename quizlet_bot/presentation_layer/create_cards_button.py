@@ -41,4 +41,6 @@ async def handle_add_manual_button(message: Message, db: AsyncSession):
     F.text == "Загрузить пакетом", UserStateFilter(StatesEnum.CREATING_CARDS.value)
 )
 async def handle_add_auto_button(message: Message, db: AsyncSession):
-    await message.reply(text="Выбран автоматический режим для загрузки\nЗагрузите пары разделенные символом ")
+    await message.reply(
+        text="Выбран автоматический режим для загрузки\nЗагрузите пары разделенные символом "
+    )
