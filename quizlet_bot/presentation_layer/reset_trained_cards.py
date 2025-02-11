@@ -19,10 +19,10 @@ async def reset_trained_cards_handler(message: Message, db: AsyncSession):
     if reset_count > 0:
         await message.reply(
             f"{reset_count} cards were reset so you can review them again.",
-            reply_markup=StartCommandKeyboards.startup_card_builder()
+            reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
     else:
         await message.reply(
             "No studied cards found to reset.",
-                reply_markup=StartCommandKeyboards.startup_card_builder()
+            reply_markup=StartCommandKeyboards.startup_card_builder(),
         )

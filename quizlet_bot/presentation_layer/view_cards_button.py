@@ -22,11 +22,13 @@ async def handle_view_cards_button(message: Message, db: AsyncSession):
         message_chunks = chunk_message(response)
         for i, chunk in enumerate(message_chunks):
             if i == len(message_chunks) - 1:
-                await message.answer(chunk, reply_markup=StartCommandKeyboards.startup_card_builder())
+                await message.answer(
+                    chunk, reply_markup=StartCommandKeyboards.startup_card_builder()
+                )
             else:
                 await message.answer(chunk)
     else:
         await message.answer(
             "You don't have any cards yet. Use the 'Create Cards' button to add new cards.",
-            reply_markup=StartCommandKeyboards.startup_card_builder()
+            reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
