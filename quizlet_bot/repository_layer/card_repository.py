@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
@@ -106,7 +107,7 @@ class CardRepository:
             result = await self.db.execute(
                 select(Card)
                 .filter(Card.user_id == user_id, Card.id.notin_(seen_card_ids))
-                .order_by(Card.is_studied.asc())
+                .order_by(Card.is_studied.asc(), func.random())
             )
 
             unstudied_card = result.scalars().first()
