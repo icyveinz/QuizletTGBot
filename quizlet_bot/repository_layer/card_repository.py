@@ -10,52 +10,44 @@ class CardRepository:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def user_has_cards(self, user_id: str) -> bool:
+    async def _execute_query(self, query):
         try:
-            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
-            return result.scalars().first() is not None
-        except SQLAlchemyError as e:
-            print(f"Database error: {e}")
-            return False
-
-    async def get_user_cards(self, user_id: str) -> List[Card]:
-        try:
-            result = await self.db.execute(select(Card).filter(Card.user_id == user_id))
-            return list(result.scalars())
-        except SQLAlchemyError as e:
-            print(f"Database error: {e}")
-            return []
-
-    async def get_next_unstudied_card(self, user_id: str) -> Optional[Card]:
-        try:
-            result = await self.db.execute(
-                select(Card).filter_by(user_id=user_id, is_studied=False)
-            )
-            return result.scalars().first()
+            result = await self.db.execute(query)
+            return result
         except SQLAlchemyError as e:
             print(f"Database error: {e}")
             return None
 
+    async def user_has_cards(self, user_id: str) -> bool:
+        result = await self._execute_query(select(Card).filter(Card.user_id == user_id))
+        if result:
+            return result.scalars().first() is not None
+        return False
+
+    async def get_user_cards(self, user_id: str) -> List[Card]:
+        result = await self._execute_query(select(Card).filter(Card.user_id == user_id))
+        return list(result.scalars()) if result else []
+
+    async def get_next_unstudied_card(self, user_id: str) -> Optional[Card]:
+        result = await self._execute_query(
+            select(Card).filter_by(user_id=user_id, is_studied=False)
+        )
+        return result.scalars().first() if result else None
+
     async def reset_studied_cards(self, user_id: str) -> int:
-        try:
-            result = await self.db.execute(
-                select(Card).filter_by(user_id=user_id, is_studied=True)
-            )
+        result = await self._execute_query(
+            select(Card).filter_by(user_id=user_id, is_studied=True)
+        )
+        if result:
             cards_to_update = result.scalars().all()
             if cards_to_update:
                 for card in cards_to_update:
                     card.is_studied = False
                 await self.db.commit()
                 return len(cards_to_update)
-            return 0
-        except SQLAlchemyError as e:
-            print(f"Database error: {e}")
-            await self.db.rollback()
-            return 0
+        return 0
 
-    async def create_card(
-        self, user_id: str, front_side: str, back_side: str
-    ) -> Optional[Card]:
+    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Optional[Card]:
         try:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
             self.db.add(new_card)
@@ -81,12 +73,8 @@ class CardRepository:
             return False
 
     async def get_card(self, card_id: int) -> Optional[Card]:
-        try:
-            result = await self.db.execute(select(Card).filter_by(id=card_id))
-            return result.scalars().first()
-        except SQLAlchemyError as e:
-            print(f"Database error: {e}")
-            return None
+        result = await self._execute_query(select(Card).filter_by(id=card_id))
+        return result.scalars().first() if result else None
 
     async def update_card(self, card: Card) -> bool:
         try:
@@ -98,20 +86,11 @@ class CardRepository:
             await self.db.rollback()
             return False
 
-    async def get_unstudied_card(
-        self, user_id: str, seen_cards: list[int]
-    ) -> Optional[Card]:
-        try:
-            seen_card_ids = set(seen_cards)
-
-            result = await self.db.execute(
-                select(Card)
-                .filter(Card.user_id == user_id, Card.id.notin_(seen_card_ids))
-                .order_by(Card.is_studied.asc(), func.random())
-            )
-
-            unstudied_card = result.scalars().first()
-            return unstudied_card
-        except SQLAlchemyError as e:
-            print(f"Database error: {e}")
-            return None
+    async def get_unstudied_card(self, user_id: str, seen_cards: List[int]) -> Optional[Card]:
+        seen_card_ids = set(seen_cards)
+        result = await self._execute_query(
+            select(Card)
+            .filter(Card.user_id == user_id, Card.id.notin_(seen_card_ids))
+            .order_by(Card.is_studied.asc(), func.random())
+        )
+        return result.scalars().first() if result else None
