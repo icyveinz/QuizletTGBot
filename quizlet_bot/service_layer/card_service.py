@@ -12,6 +12,11 @@ class CardService:
         self.user_repo = UserRepository(db)
         self.seen_cards_repo = SeenCardsRepository(db)
 
+    async def _get_user_and_card(self, user_id: str):
+        card = await self.card_repo.get_next_unstudied_card(user_id)
+        user = await self.user_repo.get_user(user_id)
+        return card, user
+
     async def user_has_cards(self, user_id: str) -> bool:
         return await self.card_repo.user_has_cards(user_id)
 
@@ -19,15 +24,18 @@ class CardService:
         return await self.card_repo.get_user_cards(user_id)
 
     async def start_training_session(self, user_id: str):
-        card = await self.card_repo.get_next_unstudied_card(user_id)
-        user = await self.user_repo.get_user(user_id)
-        card_condition = user.is_card_flipped
+        card, user = await self._get_user_and_card(user_id)
+        if not card:
+            return "Нет доступных карт для обучения."
+
         await self.user_repo.update_user_state(user_id, StatesEnum.TRAINS_CARDS.value)
-        return card, card_condition
+        return card, user.is_card_flipped
 
     async def get_next_train_card(self, user_id: str):
-        card = await self.card_repo.get_next_unstudied_card(user_id)
-        user = await self.user_repo.get_user(user_id)
+        card, user = await self._get_user_and_card(user_id)
+        if not card:
+            return "Нет доступных карт для тренировки."
+
         return card, user.is_card_flipped
 
     async def reset_studied_cards(self, user_id: str) -> int:

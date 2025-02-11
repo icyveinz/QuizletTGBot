@@ -11,3 +11,7 @@ generate:
 fix:
 	cls
 	ruff check --fix
+
+ai:
+	cls
+	python project_reader.py
