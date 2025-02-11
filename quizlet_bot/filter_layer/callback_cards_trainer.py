@@ -48,3 +48,18 @@ class CallbackCardsTrainerNextCondition(BaseFilter):
         except Exception as e:
             print(f"Error in CallbackCardsTrainerNextCondition: {e}")
             return False
+
+
+class CallbackCardsTrainerExitCondition(BaseFilter):
+    async def __call__(self, callback_query: CallbackQuery, db: AsyncSession) -> bool:
+        user_id = str(callback_query.from_user.id)
+        try:
+            user_repo = UserRepository(db)
+            user_state = (await user_repo.get_user(user_id)).state
+            return (
+                callback_query.data.startswith("EXIT:")
+                and user_state == StatesEnum.TRAINS_CARDS.value
+            )
+        except Exception as e:
+            print(f"Error in CallbackCardsTrainerNextCondition: {e}")
+            return False

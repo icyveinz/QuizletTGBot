@@ -20,6 +20,7 @@ class TrainerKeyboards:
                 )
             ],
             [InlineKeyboardButton(text="Next Card", callback_data=f"NEXT:{card_id}")],
+            [InlineKeyboardButton(text="Exit", callback_data=f"EXIT:{card_id}")]
         ]
 
         return InlineKeyboardMarkup(inline_keyboard=buttons)

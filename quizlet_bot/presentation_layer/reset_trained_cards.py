@@ -1,7 +1,6 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from service_layer.card_service import CardService
 from ui_layer.start_command_keyboards import StartCommandKeyboards
 
