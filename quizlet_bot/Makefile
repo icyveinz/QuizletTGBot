@@ -15,3 +15,6 @@ fix:
 ai:
 	cls
 	python project_reader.py
+test:
+	cls
+	pytest -v
