@@ -3,6 +3,7 @@ from repository_layer.card_repository import CardRepository
 from repository_layer.seen_cards_repository import SeenCardsRepository
 from repository_layer.user_repository import UserRepository
 from ui_layer.keyboards.trainer_keyboards import TrainerKeyboards
+from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 
 class CardButtonService:
@@ -30,7 +31,7 @@ class CardButtonService:
     async def handle_next_button_callback(self, card_id: int, user_id: str):
         card, user_state = await self._get_card_and_user_state(card_id, user_id)
         if not card or not user_state:
-            return {"message": "Card or user state not found!"}
+            return {"message": lexicon_ru["train_mode"]["error_card_user_state"]}
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
         seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
@@ -44,12 +45,12 @@ class CardButtonService:
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
         else:
-            return {"message": "Вы просмотрели все добавленные карты", "keyboard": None}
+            return {"message": lexicon_ru["train_mode"]["all_cards_viewed"], "keyboard": None}
 
     async def handle_mark_studied_button_callback(self, card_id: int, user_id: str):
         card, user_state = await self._get_card_and_user_state(card_id, user_id)
         if not card:
-            return {"message": "Card not found!"}
+            return {"message": lexicon_ru["train_mode"]["error_card"]}
 
         card.is_studied = True
         await self.card_repo.update_card(card)
@@ -66,12 +67,12 @@ class CardButtonService:
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
         else:
-            return {"message": "Вы выучили все карты! поздравляем!", "keyboard": None}
+            return {"message": lexicon_ru["train_mode"]["success"], "keyboard": None}
 
     async def handle_flip_button_callback(self, card_id: int, user_id: str):
         card, user_state = await self._get_card_and_user_state(card_id, user_id)
         if not card or not user_state:
-            return {"message": "Card or user state not found!"}
+            return {"message": lexicon_ru["train_mode"]["error_card_user_state"]}
 
         await self.user_state_repo.toggle_user_is_card_flipped(user_id)
 

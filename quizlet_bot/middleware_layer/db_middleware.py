@@ -15,4 +15,4 @@ class MyMiddleware(BaseMiddleware):
             data["db"] = db  # Inject session into handler data
             return await handler(
                 event, data
-            )  # Pass data to the next middleware/handler
+            )  # Pass data to the next middleware_layer/handler

@@ -9,7 +9,7 @@ class CallbackCardsTrainerFlipCondition(BaseFilter):
     async def __call__(self, callback_query: CallbackQuery, db: AsyncSession) -> bool:
         user_id = str(callback_query.from_user.id)
         try:
-            user_repo = UserRepository(db)  # Inject middleware-provided db
+            user_repo = UserRepository(db)  # Inject middleware_layer-provided db
             user_state = (await user_repo.get_user(user_id)).state
             return (
                 callback_query.data.startswith("FLIP:")
