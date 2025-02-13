@@ -1,6 +1,8 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from lexicon.lexicon_ru import lexicon_ru
 from service_layer.card_service import CardService
 from ui_layer.start_command_keyboards import StartCommandKeyboards
 from utilities.message_chunker import chunk_message
@@ -29,6 +31,6 @@ async def handle_view_cards_button(message: Message, db: AsyncSession):
                 await message.answer(chunk)
     else:
         await message.answer(
-            "You don't have any cards yet. Use the 'Create Cards' button to add new cards.",
+            lexicon_ru["view_cards"],
             reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
