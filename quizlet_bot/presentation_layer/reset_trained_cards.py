@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
+from lexicon.lexicon_ru import lexicon_ru
 from service_layer.card_service import CardService
 from ui_layer.start_command_keyboards import StartCommandKeyboards
 
@@ -17,11 +18,11 @@ async def reset_trained_cards_handler(message: Message, db: AsyncSession):
 
     if reset_count > 0:
         await message.reply(
-            f"{reset_count} cards were reset so you can review them again.",
+            lexicon_ru["reset_trained_cards_success"].format(count=reset_count),
             reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
     else:
         await message.reply(
-            "No studied cards found to reset.",
+            lexicon_ru["reset_trained_cards"],
             reply_markup=StartCommandKeyboards.startup_card_builder(),
         )

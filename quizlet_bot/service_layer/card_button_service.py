@@ -33,7 +33,9 @@ class CardButtonService:
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
         seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards, user_state.is_card_flipped)
+        next_card, keyboard \
+            = \
+            await self._get_next_card_and_keyboard(user_id, seen_cards, user_state.is_card_flipped)
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
@@ -51,7 +53,10 @@ class CardButtonService:
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
         seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards, user_state.is_card_flipped)
+        next_card, keyboard = await (self
+                                     ._get_next_card_and_keyboard(
+            user_id, seen_cards, user_state.is_card_flipped)
+        )
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}

@@ -63,7 +63,7 @@ async def handle_next_card_button(callback_query: CallbackQuery, db: AsyncSessio
 
 
 @router.callback_query(CallbackCardsTrainerExitCondition())
-async def handle_next_card_button(callback_query: CallbackQuery, db: AsyncSession):
+async def handle_exit_card_button(callback_query: CallbackQuery, db: AsyncSession):
     user_id = str(callback_query.from_user.id)
     user_service = UserService(db)
     response = await user_service.update_user_state(user_id, StatesEnum.ZERO_STATE.value)

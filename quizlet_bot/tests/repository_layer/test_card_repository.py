@@ -15,7 +15,9 @@ async def test_user_has_cards_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value = Card(user_id="123", front_side="Front", back_side="Back")
+    mock_result.scalars.return_value.first.return_value \
+        = (
+        Card(user_id="123", front_side="Front", back_side="Back"))
     mock_db.execute.return_value = mock_result
 
     # Test the method
@@ -85,7 +87,9 @@ async def test_get_next_unstudied_card_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value = Card(user_id="123", front_side="Front", back_side="Back", is_studied=False)
+    mock_result.scalars.return_value.first.return_value \
+        = (
+        Card(user_id="123", front_side="Front", back_side="Back", is_studied=False))
     mock_db.execute.return_value = mock_result
 
     # Test the method
@@ -194,7 +198,8 @@ async def test_get_card_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value = Card(user_id="123", front_side="Front", back_side="Back")
+    mock_result.scalars.return_value.first.return_value \
+        = Card(user_id="123", front_side="Front", back_side="Back")
     mock_db.execute.return_value = mock_result
 
     # Test the method
