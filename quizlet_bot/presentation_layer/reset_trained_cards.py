@@ -1,9 +1,9 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
-from lexicon.lexicon_ru import lexicon_ru
+from ui_layer.lexicon import lexicon_ru
 from service_layer.card_service import CardService
-from ui_layer.start_command_keyboards import StartCommandKeyboards
+from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 
 router = Router()
 

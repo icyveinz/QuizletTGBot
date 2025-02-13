@@ -10,7 +10,7 @@ from filter_layer.callback_cards_trainer import (
 )
 from service_layer.card_button_service import CardButtonService
 from service_layer.user_service import UserService
-from ui_layer.start_command_keyboards import StartCommandKeyboards
+from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 
 router = Router()
 

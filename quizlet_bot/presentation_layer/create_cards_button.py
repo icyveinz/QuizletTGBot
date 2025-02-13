@@ -5,8 +5,8 @@ from entity_layer.states_enum import StatesEnum
 from filter_layer.user_state_filter import UserStateFilter
 from service_layer.card_service import CardService
 from service_layer.user_service import UserService
-from ui_layer.create_cards_keyboards import CreateCardsKeyboards
-from ui_layer.start_command_keyboards import StartCommandKeyboards
+from ui_layer.keyboards.create_cards_keyboards import CreateCardsKeyboards
+from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 
 router = Router()
 

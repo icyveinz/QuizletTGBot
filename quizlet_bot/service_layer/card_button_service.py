@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from repository_layer.card_repository import CardRepository
 from repository_layer.seen_cards_repository import SeenCardsRepository
 from repository_layer.user_repository import UserRepository
-from ui_layer.trainer_keyboards import TrainerKeyboards
+from ui_layer.keyboards.trainer_keyboards import TrainerKeyboards
 
 
 class CardButtonService:
