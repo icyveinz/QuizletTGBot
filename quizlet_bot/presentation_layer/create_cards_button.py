@@ -50,9 +50,7 @@ async def handle_add_auto_button(message: Message, db: AsyncSession):
         user_id, StatesEnum.UPLOADING_CARDS_SETS.value
     )
     if success:
-        await message.reply(
-            text=lexicon_ru["create_cards"]["auto_mode"]
-        )
+        await message.reply(text=lexicon_ru["create_cards"]["auto_mode"])
     else:
         await message.reply(lexicon_ru["create_cards"]["error"])
 
