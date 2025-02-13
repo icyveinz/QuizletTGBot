@@ -2,6 +2,7 @@ from aiogram.types import Message
 from aiogram import Router
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
+from lexicon.lexicon_ru import lexicon_ru
 from service_layer.card_service import CardService
 from service_layer.user_service import UserService
 from ui_layer.start_command_keyboards import StartCommandKeyboards
@@ -20,12 +21,10 @@ async def start_command(message: Message, db: AsyncSession):
 
     if user_cards_exist:
         keyboard = StartCommandKeyboards.startup_card_builder()
-        response_text = "Welcome back! You already have cards. Use the buttons below to view or create more."
+        response_text = lexicon_ru["start_alternative"]
     else:
         keyboard = StartCommandKeyboards.start_creating_cards()
-        response_text = (
-            "You don't have any cards yet. Would you like to create your first cards?"
-        )
+        response_text = lexicon_ru["start"]
 
     await message.reply(response_text, reply_markup=keyboard)
     await user_service.ensure_user_state(user_id)
