@@ -11,6 +11,7 @@ from filter_layer.callback_cards_trainer import (
 from service_layer.card_button_service import CardButtonService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
+from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 router = Router()
 
@@ -74,11 +75,11 @@ async def handle_exit_card_button(callback_query: CallbackQuery, db: AsyncSessio
     await callback_query.message.delete()
     if response:
         await callback_query.message.answer(
-            text="Завершен режим тренировки",
+            text=lexicon_ru["train_mode"]["exit_mode"],
             reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
     else:
         await callback_query.message.answer(
-            text="Ошибка, не смогли завершить процесс тренировки",
+            text=lexicon_ru["train_mode"]["exit_mode_error"],
             reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
