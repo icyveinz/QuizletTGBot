@@ -6,6 +6,7 @@ from db_core_layer.db_config import init_db, get_db  # Updated import path
 
 DATABASE_URL = "postgresql+asyncpg://user:password@db:5432/applications_db"
 
+
 # Test for the get_db function
 @pytest.mark.asyncio
 async def test_get_db():

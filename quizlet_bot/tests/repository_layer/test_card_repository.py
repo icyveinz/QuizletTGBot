@@ -15,9 +15,9 @@ async def test_user_has_cards_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value \
-        = (
-        Card(user_id="123", front_side="Front", back_side="Back"))
+    mock_result.scalars.return_value.first.return_value = Card(
+        user_id="123", front_side="Front", back_side="Back"
+    )
     mock_db.execute.return_value = mock_result
 
     # Test the method
@@ -87,16 +87,18 @@ async def test_get_next_unstudied_card_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value \
-        = (
-        Card(user_id="123", front_side="Front", back_side="Back", is_studied=False))
+    mock_result.scalars.return_value.first.return_value = Card(
+        user_id="123", front_side="Front", back_side="Back", is_studied=False
+    )
     mock_db.execute.return_value = mock_result
 
     # Test the method
     result = await card_repo.get_next_unstudied_card("123")
 
     # Assert the result
-    assert result == Card(user_id="123", front_side="Front", back_side="Back", is_studied=False)
+    assert result == Card(
+        user_id="123", front_side="Front", back_side="Back", is_studied=False
+    )
     mock_db.execute.assert_called_once()
     mock_result.scalars.return_value.first.assert_called_once()
 
@@ -180,7 +182,9 @@ async def test_create_cards_success():
     mock_db.commit = MagicMock()
 
     # Test the method
-    result = await card_repo.create_cards("123", [("Front1", "Back1"), ("Front2", "Back2")])
+    result = await card_repo.create_cards(
+        "123", [("Front1", "Back1"), ("Front2", "Back2")]
+    )
 
     # Assert the result
     assert result is True
@@ -198,8 +202,9 @@ async def test_get_card_success():
     mock_execute = AsyncMock()
     mock_db.execute = mock_execute
     mock_result = MagicMock()
-    mock_result.scalars.return_value.first.return_value \
-        = Card(user_id="123", front_side="Front", back_side="Back")
+    mock_result.scalars.return_value.first.return_value = Card(
+        user_id="123", front_side="Front", back_side="Back"
+    )
     mock_db.execute.return_value = mock_result
 
     # Test the method

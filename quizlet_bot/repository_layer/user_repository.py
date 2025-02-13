@@ -23,9 +23,13 @@ class UserRepository:
         stmt = select(UserStateEntity).filter_by(user_id=user_id)
         return await self._execute_query(stmt)
 
-    async def create_user(self, user_id: str, is_card_flipped: bool) -> Optional[UserStateEntity]:
+    async def create_user(
+        self, user_id: str, is_card_flipped: bool
+    ) -> Optional[UserStateEntity]:
         try:
-            new_state = UserStateEntity(user_id=user_id, is_card_flipped=is_card_flipped)
+            new_state = UserStateEntity(
+                user_id=user_id, is_card_flipped=is_card_flipped
+            )
             self.db.add(new_state)
             await self.db.commit()
             return new_state

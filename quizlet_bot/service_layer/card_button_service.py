@@ -18,7 +18,9 @@ class CardButtonService:
             return None, None
         return card, user_state
 
-    async def _get_next_card_and_keyboard(self, user_id: str, seen_cards: list, is_card_flipped: bool):
+    async def _get_next_card_and_keyboard(
+        self, user_id: str, seen_cards: list, is_card_flipped: bool
+    ):
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
         if not next_card:
             return None, None
@@ -31,11 +33,13 @@ class CardButtonService:
             return {"message": "Card or user state not found!"}
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
+            user_id
+        )
 
-        next_card, keyboard \
-            = \
-            await self._get_next_card_and_keyboard(user_id, seen_cards, user_state.is_card_flipped)
+        next_card, keyboard = await self._get_next_card_and_keyboard(
+            user_id, seen_cards, user_state.is_card_flipped
+        )
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
@@ -51,11 +55,12 @@ class CardButtonService:
         await self.card_repo.update_card(card)
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
+            user_id
+        )
 
-        next_card, keyboard = await (self
-                                     ._get_next_card_and_keyboard(
-            user_id, seen_cards, user_state.is_card_flipped)
+        next_card, keyboard = await self._get_next_card_and_keyboard(
+            user_id, seen_cards, user_state.is_card_flipped
         )
 
         if next_card:
@@ -71,6 +76,8 @@ class CardButtonService:
         await self.user_state_repo.toggle_user_is_card_flipped(user_id)
 
         text = card.back_side if user_state.is_card_flipped else card.front_side
-        keyboard = TrainerKeyboards.create_card_buttons(card.id, user_state.is_card_flipped)
+        keyboard = TrainerKeyboards.create_card_buttons(
+            card.id, user_state.is_card_flipped
+        )
 
         return {"message": text, "keyboard": keyboard}

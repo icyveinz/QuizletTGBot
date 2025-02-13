@@ -4,7 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from entity_layer.user_state import UserStateEntity
 from entity_layer.states_enum import StatesEnum
-from repository_layer.user_repository import UserRepository  # Replace with the actual module path
+from repository_layer.user_repository import (
+    UserRepository,
+)  # Replace with the actual module path
 
 
 @pytest.fixture
@@ -100,7 +102,9 @@ async def test_create_user_database_error(user_repo, mock_db):
 async def test_reset_user(user_repo, mock_db):
     # Arrange
     user_id = "123"
-    mock_user = UserStateEntity(user_id=user_id, state="some_state", front_side="some_front")
+    mock_user = UserStateEntity(
+        user_id=user_id, state="some_state", front_side="some_front"
+    )
 
     # Mock the result of execute().scalars().first()
     mock_scalars = MagicMock()

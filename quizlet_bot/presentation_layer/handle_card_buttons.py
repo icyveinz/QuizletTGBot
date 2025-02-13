@@ -5,7 +5,8 @@ from entity_layer.states_enum import StatesEnum
 from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerFlipCondition,
     CallbackCardsTrainerMarkStudiedCondition,
-    CallbackCardsTrainerNextCondition, CallbackCardsTrainerExitCondition,
+    CallbackCardsTrainerNextCondition,
+    CallbackCardsTrainerExitCondition,
 )
 from service_layer.card_button_service import CardButtonService
 from service_layer.user_service import UserService
@@ -66,16 +67,18 @@ async def handle_next_card_button(callback_query: CallbackQuery, db: AsyncSessio
 async def handle_exit_card_button(callback_query: CallbackQuery, db: AsyncSession):
     user_id = str(callback_query.from_user.id)
     user_service = UserService(db)
-    response = await user_service.update_user_state(user_id, StatesEnum.ZERO_STATE.value)
+    response = await user_service.update_user_state(
+        user_id, StatesEnum.ZERO_STATE.value
+    )
     await callback_query.answer()
     await callback_query.message.delete()
     if response:
         await callback_query.message.answer(
             text="Завершен режим тренировки",
-            reply_markup=StartCommandKeyboards.startup_card_builder()
+            reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
     else:
         await callback_query.message.answer(
             text="Ошибка, не смогли завершить процесс тренировки",
-            reply_markup=StartCommandKeyboards.startup_card_builder()
+            reply_markup=StartCommandKeyboards.startup_card_builder(),
         )
