@@ -45,7 +45,10 @@ class CardButtonService:
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
         else:
-            return {"message": lexicon_ru["train_mode"]["all_cards_viewed"], "keyboard": None}
+            return {
+                "message": lexicon_ru["train_mode"]["all_cards_viewed"],
+                "keyboard": None,
+            }
 
     async def handle_mark_studied_button_callback(self, card_id: int, user_id: str):
         card, user_state = await self._get_card_and_user_state(card_id, user_id)
