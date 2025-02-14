@@ -30,17 +30,17 @@ lexicon_ru = {
         "error_card": "Ошибка при получении карты",
         "success": "Вы выучили все карты, поздравляем!",
     },
-    "keyboards" : {
-        "create_cards_keyboards" : {
-            "manual" : "Добавить вручную",
-            "auto" : "Загрузить пакетом",
-            "finish_uploading_session" : "Завершить добавление"
+    "keyboards": {
+        "create_cards_keyboards": {
+            "manual": "Добавить вручную",
+            "auto": "Загрузить пакетом",
+            "finish_uploading_session": "Завершить добавление",
         },
-        "start_keyboard" : {
-            "view_cards" : "View Cards",
-            "create_cards" : "Create Cards",
-            "train_cards" : "Train Cards",
-            "reset_trained_cards" : "Reset Trained Cards"
-        }
-    }
+        "start_keyboard": {
+            "view_cards": "View Cards",
+            "create_cards": "Create Cards",
+            "train_cards": "Train Cards",
+            "reset_trained_cards": "Reset Trained Cards",
+        },
+    },
 }

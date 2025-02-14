@@ -9,7 +9,7 @@ class CreateCardsKeyboards:
     def select_mode_for_creating():
         button_list = [
             lexicon_ru["keyboards"]["create_cards_keyboards"]["manual"],
-            lexicon_ru["keyboards"]["create_cards_keyboards"]["auto"]
+            lexicon_ru["keyboards"]["create_cards_keyboards"]["auto"],
         ]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
@@ -22,7 +22,9 @@ class CreateCardsKeyboards:
     @staticmethod
     def leave_mode_for_creating():
         button_list = [
-            lexicon_ru["keyboards"]["create_cards_keyboards"]["finish_uploading_session"]
+            lexicon_ru["keyboards"]["create_cards_keyboards"][
+                "finish_uploading_session"
+            ]
         ]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
