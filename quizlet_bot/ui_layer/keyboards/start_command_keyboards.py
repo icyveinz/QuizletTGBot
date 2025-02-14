@@ -1,16 +1,18 @@
 from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
+from ui_layer.lexicon.lexicon_ru import lexicon_ru
+
 
 class StartCommandKeyboards:
 
     @staticmethod
     def startup_card_builder():
         button_list = [
-            "View Cards",
-            "Create Cards",
-            "Train Cards",
-            "Reset Trained Cards",
+            lexicon_ru["keyboards"]["start_keyboard"]["view_cards"],
+            lexicon_ru["keyboards"]["start_keyboard"]["create_cards"],
+            lexicon_ru["keyboards"]["start_keyboard"]["train_cards"],
+            lexicon_ru["keyboards"]["start_keyboard"]["reset_trained_cards"],
         ]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
@@ -22,7 +24,7 @@ class StartCommandKeyboards:
 
     @staticmethod
     def start_creating_cards():
-        button_list = ["Create Cards"]
+        button_list = [lexicon_ru["keyboards"]["start_keyboard"]["create_cards"]]
         kb_builder = ReplyKeyboardBuilder()
         buttons: list[KeyboardButton] = [
             KeyboardButton(text=option) for option in button_list
