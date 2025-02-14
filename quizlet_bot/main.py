@@ -5,7 +5,7 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from db_core_layer.db_config import init_db
-from middleware_layer.db_middleware import MyMiddleware
+from middleware_layer.db_middleware import DBInjectorMiddleware
 from register_handlers import register_handlers
 
 TOKEN = "6907074579:AAFJOtvMEDN8ewOVP4XnxOxWyZY-OTjLXXM"
@@ -17,7 +17,7 @@ async def main() -> None:
 
     await init_db()
 
-    dp.update.middleware(MyMiddleware())
+    dp.update.middleware(DBInjectorMiddleware())
 
     register_handlers(dp, bot)
 

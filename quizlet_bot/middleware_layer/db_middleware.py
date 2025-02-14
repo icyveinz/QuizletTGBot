@@ -4,7 +4,7 @@ from typing import Dict, Any, Awaitable, Callable
 from db_core_layer.db_config import get_db
 
 
-class MyMiddleware(BaseMiddleware):
+class DBInjectorMiddleware(BaseMiddleware):
     async def __call__(
         self,
         handler: Callable[[Update, Dict[str, Any]], Awaitable[Any]],
