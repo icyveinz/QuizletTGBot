@@ -30,24 +30,24 @@ lexicon_ru = {
         "error_card": "Ошибка при получении карты",
         "success": "Вы выучили все карты, поздравляем!",
     },
-    "keyboards" : {
-        "create_cards_keyboards" : {
-            "manual" : "Добавить вручную",
-            "auto" : "Загрузить пакетом",
-            "finish_uploading_session" : "Завершить добавление"
+    "keyboards": {
+        "create_cards_keyboards": {
+            "manual": "Добавить вручную",
+            "auto": "Загрузить пакетом",
+            "finish_uploading_session": "Завершить добавление",
         },
-        "start_keyboard" : {
-            "view_cards" : "Просмотреть карты",
-            "create_cards" : "Добавить карты",
-            "train_cards" : "Режим тренировки",
-            "reset_trained_cards" : "Сбросить прогресс"
+        "start_keyboard": {
+            "view_cards": "Просмотреть карты",
+            "create_cards": "Добавить карты",
+            "train_cards": "Режим тренировки",
+            "reset_trained_cards": "Сбросить прогресс",
         },
-        "trainer_inline" : {
-            "flip_card" : "Перевернуть",
-            "flip_inverted" : "Показать перед",
-            "mark_studied" : "Запомнил",
-            "next_card" : "Следующая карта",
-            "exit" : "Выйти"
-        }
-    }
+        "trainer_inline": {
+            "flip_card": "Перевернуть",
+            "flip_inverted": "Показать перед",
+            "mark_studied": "Запомнил",
+            "next_card": "Следующая карта",
+            "exit": "Выйти",
+        },
+    },
 }
