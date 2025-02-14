@@ -12,7 +12,9 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 router = Router()
 
 
-@router.message(F.text == "Create Cards")
+@router.message(
+    F.text == lexicon_ru["keyboards"]["start_keyboard"]["create_cards"]
+)
 async def handle_create_cards_button(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
     user_service = UserService(db)
@@ -26,7 +28,8 @@ async def handle_create_cards_button(message: Message, db: AsyncSession):
 
 
 @router.message(
-    F.text == "Добавить вручную", UserStateFilter(StatesEnum.CREATING_CARDS.value)
+    F.text == lexicon_ru["keyboards"]["create_cards_keyboards"]["manual"],
+    UserStateFilter(StatesEnum.CREATING_CARDS.value)
 )
 async def handle_add_manual_button(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
@@ -41,7 +44,8 @@ async def handle_add_manual_button(message: Message, db: AsyncSession):
 
 
 @router.message(
-    F.text == "Загрузить пакетом", UserStateFilter(StatesEnum.CREATING_CARDS.value)
+    F.text == lexicon_ru["keyboards"]["create_cards_keyboards"]["auto"],
+    UserStateFilter(StatesEnum.CREATING_CARDS.value)
 )
 async def handle_add_auto_button(message: Message, db: AsyncSession):
     user_id = str(message.from_user.id)
@@ -56,7 +60,7 @@ async def handle_add_auto_button(message: Message, db: AsyncSession):
 
 
 @router.message(
-    F.text == "Завершить добавление",
+    F.text == lexicon_ru["keyboards"]["create_cards_keyboards"]["finish_uploading_session"],
     UserStateFilter(StatesEnum.UPLOADING_CARDS_SETS.value),
 )
 async def finish_adding_sets(message: Message, db: AsyncSession):

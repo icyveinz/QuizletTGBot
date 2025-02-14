@@ -37,10 +37,17 @@ lexicon_ru = {
             "finish_uploading_session" : "Завершить добавление"
         },
         "start_keyboard" : {
-            "view_cards" : "View Cards",
-            "create_cards" : "Create Cards",
-            "train_cards" : "Train Cards",
-            "reset_trained_cards" : "Reset Trained Cards"
+            "view_cards" : "Просмотреть карты",
+            "create_cards" : "Добавить карты",
+            "train_cards" : "Режим тренировки",
+            "reset_trained_cards" : "Сбросить прогресс"
+        },
+        "trainer_inline" : {
+            "flip_card" : "Перевернуть",
+            "flip_inverted" : "Показать перед",
+            "mark_studied" : "Запомнил",
+            "next_card" : "Следующая карта",
+            "exit" : "Выйти"
         }
     }
 }
