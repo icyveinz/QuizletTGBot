@@ -60,6 +60,7 @@ class CardService:
         converted_cards = trim_content_to_cards(text)
         result = await self.card_repo.create_cards(user_id, converted_cards)
         if result:
-            return lexicon_ru["card_service"]["add_user_set_result"].format(converted_cards=len(converted_cards))
+            return (lexicon_ru["card_service"]["add_user_set_result"]
+                    .format(converted_cards=len(converted_cards)))
         else:
             return lexicon_ru["card_service"]["error_card"]
