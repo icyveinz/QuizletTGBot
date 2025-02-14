@@ -50,4 +50,11 @@ lexicon_ru = {
             "exit" : "Выйти"
         }
     }
+        "start_keyboard": {
+            "view_cards": "View Cards",
+            "create_cards": "Create Cards",
+            "train_cards": "Train Cards",
+            "reset_trained_cards": "Reset Trained Cards",
+        },
+    },
 }
