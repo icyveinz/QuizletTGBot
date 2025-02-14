@@ -9,7 +9,7 @@ from utilities.message_chunker import chunk_message
 router = Router()
 
 
-@router.message(F.text == "View Cards")
+@router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["view_cards"])
 async def handle_view_cards_button(message: Message, db: AsyncSession):
     card_service = CardService(db)
     user_id = str(message.from_user.id)

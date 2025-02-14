@@ -8,7 +8,7 @@ from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 router = Router()
 
 
-@router.message(F.text == "Reset Trained Cards")
+@router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["reset_trained_cards"])
 async def reset_trained_cards_handler(message: Message, db: AsyncSession):
     card_service = CardService(db)
     user_id = str(message.from_user.id)

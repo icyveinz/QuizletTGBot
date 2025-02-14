@@ -8,7 +8,7 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 router = Router()
 
 
-@router.message(F.text == "Train Cards")
+@router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["train_cards"])
 async def train_cards_handler(message: Message, db: AsyncSession):
     card_service = CardService(db)
     user_id = str(message.from_user.id)
