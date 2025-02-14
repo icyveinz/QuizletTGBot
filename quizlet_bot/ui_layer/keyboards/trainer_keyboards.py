@@ -21,14 +21,14 @@ class TrainerKeyboards:
             ],
             [
                 InlineKeyboardButton(
-                    text=lexicon_ru["keyboards"]["trainer_inline"]["mark_studied"],
-                    callback_data=f"MARK_STUDIED:{card_id}",
+                    text=lexicon_ru["keyboards"]["trainer_inline"]["next_card"],
+                    callback_data=f"NEXT:{card_id}",
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text=lexicon_ru["keyboards"]["trainer_inline"]["next_card"],
-                    callback_data=f"NEXT:{card_id}",
+                    text=lexicon_ru["keyboards"]["trainer_inline"]["mark_studied"],
+                    callback_data=f"MARK_STUDIED:{card_id}",
                 )
             ],
             [
