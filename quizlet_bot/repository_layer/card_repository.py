@@ -34,6 +34,22 @@ class CardRepository:
         )
         return result.scalars().first() if result else None
 
+    async def count_studied_cards(self, user_id: str) -> int:
+        query = select(func.count(Card.id)).filter_by(user_id=user_id, is_studied=True)
+        result = await self._execute_query(query)
+        if result:
+            count = result.scalar()
+            return count if count is not None else 0
+        return 0
+
+    async def count_all_user_cards(self, user_id: str) -> int:
+        query = select(func.count(Card.id)).filter_by(user_id=user_id)
+        result = await self._execute_query(query)
+        if result:
+            count = result.scalar()
+            return count if count is not None else 0
+        return 0
+
     async def reset_studied_cards(self, user_id: str) -> int:
         result = await self._execute_query(
             select(Card).filter_by(user_id=user_id, is_studied=True)

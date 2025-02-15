@@ -43,6 +43,7 @@ lexicon_ru = {
             "reset_trained_cards": "Сбросить прогресс",
         },
         "trainer_inline": {
+            "counter": "{difference}/{total_cards}",
             "flip_card": "Перевернуть ↩",
             "flip_inverted": "Перевернуть ↪",
             "mark_studied": "Выучено ✅",

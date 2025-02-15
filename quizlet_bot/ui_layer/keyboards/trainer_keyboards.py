@@ -4,11 +4,20 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 class TrainerKeyboards:
     @staticmethod
-    def create_card_buttons(card_id, is_card_flipped):
+    def create_card_buttons(card_id, is_card_flipped, difference, total_cards):
         if not card_id:
             raise ValueError("Invalid card_id provided to create_card_buttons.")
 
         buttons = [
+            [
+                InlineKeyboardButton(
+                    text=(
+                        lexicon_ru["keyboards"]["trainer_inline"]["counter"]
+                        .format(difference=difference, total_cards=total_cards)
+                    ),
+                    callback_data=f"NULL:{card_id}",
+                )
+            ],
             [
                 InlineKeyboardButton(
                     text=(

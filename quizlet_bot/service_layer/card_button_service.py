@@ -19,13 +19,26 @@ class CardButtonService:
             return None, None
         return card, user_state
 
+    async def get_progress_counter(self, user_id: str) -> (int, int):
+        trained_cards = await self.card_repo.count_studied_cards(user_id)
+        total_cards = await self.card_repo.count_all_user_cards(user_id)
+        difference = total_cards - trained_cards
+        passed = total_cards - difference
+        return passed, total_cards
+
     async def _get_next_card_and_keyboard(
         self, user_id: str, seen_cards: list, is_card_flipped: bool
     ):
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
         if not next_card:
             return None, None
-        keyboard = TrainerKeyboards.create_card_buttons(next_card.id, is_card_flipped)
+        difference, total_cards = await self.get_progress_counter(user_id)
+        keyboard = TrainerKeyboards.create_card_buttons(
+            next_card.id,
+            is_card_flipped,
+            difference,
+            total_cards
+        )
         return next_card, keyboard
 
     async def handle_next_button_callback(self, card_id: int, user_id: str):
@@ -78,10 +91,10 @@ class CardButtonService:
             return {"message": lexicon_ru["train_mode"]["error_card_user_state"]}
 
         await self.user_state_repo.toggle_user_is_card_flipped(user_id)
-
+        difference, total_cards = await self.get_progress_counter(user_id)
         text = card.back_side if user_state.is_card_flipped else card.front_side
         keyboard = TrainerKeyboards.create_card_buttons(
-            card.id, user_state.is_card_flipped
+            card.id, user_state.is_card_flipped, difference, total_cards
         )
 
         return {"message": text, "keyboard": keyboard}
