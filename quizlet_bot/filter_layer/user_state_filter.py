@@ -8,7 +8,9 @@ class UserStateFilter(BaseFilter):
     def __init__(self, expected_state: str):
         self.expected_state = expected_state
 
-    async def __call__(self, message: Message, db: AsyncSession, injected_user_id: str) -> bool:
+    async def __call__(
+        self, message: Message, db: AsyncSession, injected_user_id: str
+    ) -> bool:
         try:
             user_repo = UserRepository(db)
             user = await user_repo.get_user(injected_user_id)

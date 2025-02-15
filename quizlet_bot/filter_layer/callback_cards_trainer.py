@@ -6,7 +6,9 @@ from repository_layer.user_repository import UserRepository
 
 
 class CallbackCardsTrainerFlipCondition(BaseFilter):
-    async def __call__(self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str) -> bool:
+    async def __call__(
+        self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
+    ) -> bool:
         try:
             user_repo = UserRepository(db)
             user_state = (await user_repo.get_user(injected_user_id)).state
@@ -20,7 +22,9 @@ class CallbackCardsTrainerFlipCondition(BaseFilter):
 
 
 class CallbackCardsTrainerMarkStudiedCondition(BaseFilter):
-    async def __call__(self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str) -> bool:
+    async def __call__(
+        self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
+    ) -> bool:
         try:
             user_repo = UserRepository(db)
             user_state = (await user_repo.get_user(injected_user_id)).state
@@ -34,7 +38,9 @@ class CallbackCardsTrainerMarkStudiedCondition(BaseFilter):
 
 
 class CallbackCardsTrainerNextCondition(BaseFilter):
-    async def __call__(self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str) -> bool:
+    async def __call__(
+        self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
+    ) -> bool:
         try:
             user_repo = UserRepository(db)
             user_state = (await user_repo.get_user(injected_user_id)).state
@@ -48,7 +54,9 @@ class CallbackCardsTrainerNextCondition(BaseFilter):
 
 
 class CallbackCardsTrainerExitCondition(BaseFilter):
-    async def __call__(self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str) -> bool:
+    async def __call__(
+        self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
+    ) -> bool:
         try:
             user_repo = UserRepository(db)
             user_state = (await user_repo.get_user(injected_user_id)).state
