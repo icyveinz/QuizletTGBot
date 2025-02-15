@@ -10,7 +10,9 @@ router = Router()
 
 
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["view_cards"])
-async def handle_view_cards_button(message: Message, db: AsyncSession, injected_user_id: str):
+async def handle_view_cards_button(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
     card_service = CardService(db)
 
     user_cards = await card_service.get_user_cards(injected_user_id)

@@ -22,10 +22,14 @@ async def handle_card_input(message: Message, db: AsyncSession, injected_user_id
 
 
 @router.message(UserStateFilter(StatesEnum.AWAITING_BACK.value))
-async def handle_back_card_input(message: Message, db: AsyncSession, injected_user_id: str):
+async def handle_back_card_input(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
     card_service = CardService(db)
     text = message.text.strip()
 
     response = await card_service.process_back_card_input(injected_user_id, text)
 
-    await message.reply(response, reply_markup=StartCommandKeyboards.startup_card_builder())
+    await message.reply(
+        response, reply_markup=StartCommandKeyboards.startup_card_builder()
+    )

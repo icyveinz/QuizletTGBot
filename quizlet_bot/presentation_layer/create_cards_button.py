@@ -13,10 +13,14 @@ router = Router()
 
 
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["create_cards"])
-async def handle_create_cards_button(message: Message, db: AsyncSession, injected_user_id: str):
+async def handle_create_cards_button(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
     user_service = UserService(db)
 
-    await user_service.update_user_state(injected_user_id, StatesEnum.CREATING_CARDS.value)
+    await user_service.update_user_state(
+        injected_user_id, StatesEnum.CREATING_CARDS.value
+    )
 
     await message.reply(
         text=lexicon_ru["create_cards"]["entry"],
@@ -28,7 +32,9 @@ async def handle_create_cards_button(message: Message, db: AsyncSession, injecte
     F.text == lexicon_ru["keyboards"]["create_cards_keyboards"]["manual"],
     UserStateFilter(StatesEnum.CREATING_CARDS.value),
 )
-async def handle_add_manual_button(message: Message, db: AsyncSession, injected_user_id: str):
+async def handle_add_manual_button(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
     user_service = UserService(db)
     success = await user_service.update_user_state(
         injected_user_id, StatesEnum.AWAITING_FRONT.value
@@ -43,7 +49,9 @@ async def handle_add_manual_button(message: Message, db: AsyncSession, injected_
     F.text == lexicon_ru["keyboards"]["create_cards_keyboards"]["auto"],
     UserStateFilter(StatesEnum.CREATING_CARDS.value),
 )
-async def handle_add_auto_button(message: Message, db: AsyncSession, injected_user_id: str):
+async def handle_add_auto_button(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
     user_service = UserService(db)
     success = await user_service.update_user_state(
         injected_user_id, StatesEnum.UPLOADING_CARDS_SETS.value
