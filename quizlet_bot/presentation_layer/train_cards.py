@@ -18,7 +18,9 @@ async def train_cards_handler(
 
     await card_service.reset_seen_cards(injected_user_id)
     card, is_flipped = await card_service.start_training_session(injected_user_id)
-    difference, total_cards = await card_button_service.get_progress_counter(injected_user_id)
+    difference, total_cards = await card_button_service.get_progress_counter(
+        injected_user_id
+    )
 
     if not card:
         await message.answer(lexicon_ru["train_mode"]["no_more_cards_to_study"])
@@ -28,5 +30,6 @@ async def train_cards_handler(
         card.id,
         is_card_flipped=is_flipped,
         difference=difference,
-        total_cards=total_cards)
+        total_cards=total_cards,
+    )
     await message.answer(card.front_side, reply_markup=keyboard)
