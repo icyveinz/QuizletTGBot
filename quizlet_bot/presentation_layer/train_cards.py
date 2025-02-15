@@ -9,12 +9,11 @@ router = Router()
 
 
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["train_cards"])
-async def train_cards_handler(message: Message, db: AsyncSession):
+async def train_cards_handler(message: Message, db: AsyncSession, injected_user_id: str):
     card_service = CardService(db)
-    user_id = str(message.from_user.id)
 
-    await card_service.reset_seen_cards(user_id)
-    card, is_flipped = await card_service.start_training_session(user_id)
+    await card_service.reset_seen_cards(injected_user_id)
+    card, is_flipped = await card_service.start_training_session(injected_user_id)
 
     if not card:
         await message.answer(lexicon_ru["train_mode"]["no_more_cards_to_study"])

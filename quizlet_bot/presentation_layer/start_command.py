@@ -11,13 +11,13 @@ router = Router()
 
 
 @router.message(CommandStart())
-async def start_command(message: Message, db: AsyncSession):
-    user_id = str(message.from_user.id)
-
+async def start_command(message: Message, db: AsyncSession, injected_user_id: str):
     user_service = UserService(db)
     card_service = CardService(db)
 
-    user_cards_exist = await card_service.user_has_cards(user_id)
+    print(injected_user_id)
+
+    user_cards_exist = await card_service.user_has_cards(injected_user_id)
 
     if user_cards_exist:
         keyboard = StartCommandKeyboards.startup_card_builder()
@@ -27,4 +27,4 @@ async def start_command(message: Message, db: AsyncSession):
         response_text = lexicon_ru["start"]
 
     await message.reply(response_text, reply_markup=keyboard)
-    await user_service.ensure_user_state(user_id)
+    await user_service.ensure_user_state(injected_user_id)

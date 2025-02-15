@@ -10,11 +10,10 @@ router = Router()
 
 
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["view_cards"])
-async def handle_view_cards_button(message: Message, db: AsyncSession):
+async def handle_view_cards_button(message: Message, db: AsyncSession, injected_user_id: str):
     card_service = CardService(db)
-    user_id = str(message.from_user.id)
 
-    user_cards = await card_service.get_user_cards(user_id)
+    user_cards = await card_service.get_user_cards(injected_user_id)
 
     if user_cards:
         response = "<b>Ваши добавленные карты:</b>\n\n"

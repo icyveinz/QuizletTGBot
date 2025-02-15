@@ -11,12 +11,11 @@ router = Router()
 @router.message(
     F.text == lexicon_ru["keyboards"]["start_keyboard"]["reset_trained_cards"]
 )
-async def reset_trained_cards_handler(message: Message, db: AsyncSession):
+async def reset_trained_cards_handler(message: Message, db: AsyncSession, injected_user_id: str):
     card_service = CardService(db)
-    user_id = str(message.from_user.id)
 
-    await card_service.reset_seen_cards(user_id)
-    reset_count = await card_service.reset_studied_cards(user_id)
+    await card_service.reset_seen_cards(injected_user_id)
+    reset_count = await card_service.reset_studied_cards(injected_user_id)
 
     if reset_count > 0:
         await message.reply(

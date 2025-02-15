@@ -20,3 +20,4 @@ class UserIDExtractorMiddleware(BaseMiddleware):
             user_id = None
         if user_id:
             data["injected_user_id"] = str(user_id)
+        return await handler(event, data)
