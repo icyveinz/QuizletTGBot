@@ -12,13 +12,16 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 router = Router()
 
+
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["train_cards"])
 async def enter_training_mode(
     message: Message, db: AsyncSession, injected_user_id: str
 ):
     user_service = UserService(db)
 
-    await user_service.update_user_state(injected_user_id, StatesEnum.CHOOSING_TRAINING_MODE.value)
+    await user_service.update_user_state(
+        injected_user_id, StatesEnum.CHOOSING_TRAINING_MODE.value
+    )
 
     await message.reply(
         text=lexicon_ru["train_mode"]["entry"],

@@ -34,10 +34,7 @@ class CardButtonService:
             return None, None
         difference, total_cards = await self.get_progress_counter(user_id)
         keyboard = TrainerInlineKeyboards.create_card_buttons(
-            next_card.id,
-            is_card_flipped,
-            difference,
-            total_cards
+            next_card.id, is_card_flipped, difference, total_cards
         )
         return next_card, keyboard
 

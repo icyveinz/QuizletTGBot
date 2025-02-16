@@ -12,8 +12,9 @@ class TrainerInlineKeyboards:
             [
                 InlineKeyboardButton(
                     text=(
-                        lexicon_ru["keyboards"]["trainer_inline"]["counter"]
-                        .format(difference=difference, total_cards=total_cards)
+                        lexicon_ru["keyboards"]["trainer_inline"]["counter"].format(
+                            difference=difference, total_cards=total_cards
+                        )
                     ),
                     callback_data=f"NULL:{card_id}",
                 )
