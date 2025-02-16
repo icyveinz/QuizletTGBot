@@ -85,7 +85,7 @@ async def test_training_mode(message: Message, db: AsyncSession, injected_user_i
         correct_answer=back_side,
         wrong_answers=randomized,
         difference=difference,
-        total_cards=total_cards
+        total_cards=total_cards,
     )
 
     await message.answer(card.front_side, reply_markup=keyboard)
