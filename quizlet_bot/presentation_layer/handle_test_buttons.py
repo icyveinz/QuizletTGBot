@@ -4,7 +4,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.callback_cards_trainer import CallbackCardsTrainerExitCondition
-from filter_layer.callback_test_trainer import CallbackCardsTestTrainerFalse, CallbackCardsTestTrainerTrue
+from filter_layer.callback_test_trainer import (
+    CallbackCardsTestTrainerFalse,
+    CallbackCardsTestTrainerTrue,
+)
 from service_layer.card_test_service import CardTestService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
@@ -22,8 +25,7 @@ async def handle_flip_card_button(
     card_id = int(card_id)
 
     response = await card_test_service.handle_false_answer_button_callback(
-        card_id,
-        injected_user_id
+        card_id, injected_user_id
     )
 
     if "message" in response:
@@ -51,6 +53,7 @@ async def handle_mark_studied_card_button(
         await callback_query.message.edit_text(text, reply_markup=keyboard)
 
     await callback_query.answer()
+
 
 @router.callback_query(CallbackCardsTrainerExitCondition())
 async def handle_exit_card_button(

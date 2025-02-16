@@ -26,9 +26,7 @@ class CardTestService:
         passed = total_cards - difference
         return passed, total_cards
 
-    async def _get_next_card_and_keyboard(
-        self, user_id: str, seen_cards: list
-    ):
+    async def _get_next_card_and_keyboard(self, user_id: str, seen_cards: list):
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
         fake_answers = await self.card_repo.get_random_back_sides(user_id)
         if not next_card:

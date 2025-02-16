@@ -32,8 +32,9 @@ class TrainerTestInlineKeyboards:
         buttons.append(
             [
                 InlineKeyboardButton(
-                text=lexicon_ru["keyboards"]["trainer_inline"]["exit"],
-                callback_data=f"EXIT:{card_id}")
+                    text=lexicon_ru["keyboards"]["trainer_inline"]["exit"],
+                    callback_data=f"EXIT:{card_id}",
+                )
             ]
         )
         return InlineKeyboardMarkup(inline_keyboard=buttons)

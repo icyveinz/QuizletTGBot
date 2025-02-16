@@ -58,9 +58,7 @@ class CallbackCardsTrainerExitCondition(BaseFilter):
         self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
     ) -> bool:
         try:
-            return (
-                callback_query.data.startswith("EXIT:")
-            )
+            return callback_query.data.startswith("EXIT:")
         except Exception as e:
             print(f"Error in CallbackCardsTrainerNextCondition: {e}")
             return False
