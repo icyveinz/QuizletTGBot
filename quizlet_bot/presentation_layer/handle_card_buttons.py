@@ -5,7 +5,7 @@ from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerFlipCondition,
     CallbackCardsTrainerMarkStudiedCondition,
-    CallbackCardsTrainerNextCondition
+    CallbackCardsTrainerNextCondition,
 )
 from filter_layer.callback_exit_condition import CallbackExitCondition
 from service_layer.card_button_service import CardButtonService
