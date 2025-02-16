@@ -6,7 +6,11 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 class TrainerTestInlineKeyboards:
     @staticmethod
     def create_answer_buttons(
-        card_id: int, correct_answer: str, wrong_answers: list[str]
+            card_id: int,
+            correct_answer: str,
+            wrong_answers: list[str],
+            difference : int,
+            total_cards : int
     ) -> InlineKeyboardMarkup:
         if not card_id:
             raise ValueError("Invalid card_id provided to create_answer_buttons.")
@@ -37,4 +41,14 @@ class TrainerTestInlineKeyboards:
                 )
             ]
         )
+        buttons.insert(0, [
+                InlineKeyboardButton(
+                    text=(
+                        lexicon_ru["keyboards"]["trainer_inline"]["counter"].format(
+                            difference=difference, total_cards=total_cards
+                        )
+                    ),
+                    callback_data=f"NULL:{card_id}",
+                )
+            ])
         return InlineKeyboardMarkup(inline_keyboard=buttons)

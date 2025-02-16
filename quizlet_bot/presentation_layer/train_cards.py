@@ -5,6 +5,7 @@ from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.user_state_filter import UserStateFilter
 from service_layer.card_button_service import CardButtonService
 from service_layer.card_service import CardService
+from service_layer.card_test_service import CardTestService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.trainer_inline_keyboards import TrainerInlineKeyboards
 from ui_layer.keyboards.trainer_keyboards import TrainerKeyboard
@@ -65,9 +66,13 @@ async def classic_card_training_mode(
 )
 async def test_training_mode(message: Message, db: AsyncSession, injected_user_id: str):
     card_service = CardService(db)
+    card_button_service = CardTestService(db)
 
     await card_service.reset_seen_cards(injected_user_id)
     card, back_side, randomized = await card_service.start_testing_session(
+        injected_user_id
+    )
+    difference, total_cards = await card_button_service.get_progress_counter(
         injected_user_id
     )
 
@@ -76,7 +81,11 @@ async def test_training_mode(message: Message, db: AsyncSession, injected_user_i
         return
 
     keyboard = TrainerTestInlineKeyboards.create_answer_buttons(
-        card_id=card.id, correct_answer=back_side, wrong_answers=randomized
+        card_id=card.id,
+        correct_answer=back_side,
+        wrong_answers=randomized,
+        difference=difference,
+        total_cards=total_cards
     )
 
     await message.answer(card.front_side, reply_markup=keyboard)

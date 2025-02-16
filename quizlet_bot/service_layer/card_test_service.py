@@ -31,8 +31,9 @@ class CardTestService:
         fake_answers = await self.card_repo.get_random_back_sides(user_id)
         if not next_card:
             return None, None
+        difference, total_cards = await self.get_progress_counter(user_id)
         keyboard = TrainerTestInlineKeyboards.create_answer_buttons(
-            next_card.id, next_card.back_side, fake_answers
+            next_card.id, next_card.back_side, fake_answers, difference, total_cards
         )
         return next_card, keyboard
 
