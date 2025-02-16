@@ -63,22 +63,20 @@ async def classic_card_training_mode(
     F.text == lexicon_ru["keyboards"]["trainer_keyboard"]["test"],
     UserStateFilter(StatesEnum.CHOOSING_TRAINING_MODE.value),
 )
-async def test_training_mode(
-    message: Message, db: AsyncSession, injected_user_id: str
-):
+async def test_training_mode(message: Message, db: AsyncSession, injected_user_id: str):
     card_service = CardService(db)
 
     await card_service.reset_seen_cards(injected_user_id)
-    card, back_side, randomized = await card_service.start_testing_session(injected_user_id)
+    card, back_side, randomized = await card_service.start_testing_session(
+        injected_user_id
+    )
 
     if not card:
         await message.answer(lexicon_ru["train_mode"]["no_more_cards_to_study"])
         return
 
     keyboard = TrainerTestInlineKeyboards.create_answer_buttons(
-        card_id=card.id,
-        correct_answer=back_side,
-        wrong_answers=randomized
+        card_id=card.id, correct_answer=back_side, wrong_answers=randomized
     )
 
     await message.answer(card.front_side, reply_markup=keyboard)

@@ -5,9 +5,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 class TrainerTestInlineKeyboards:
     @staticmethod
     def create_answer_buttons(
-            card_id: int,
-            correct_answer: str,
-            wrong_answers: list[str]
+        card_id: int, correct_answer: str, wrong_answers: list[str]
     ) -> InlineKeyboardMarkup:
         if not card_id:
             raise ValueError("Invalid card_id provided to create_answer_buttons.")
@@ -23,10 +21,11 @@ class TrainerTestInlineKeyboards:
 
         # Create InlineKeyboardButtons for each option
         buttons = [
-            [InlineKeyboardButton(  # Each button should be in its own list
-                text=option_text,
-                callback_data=f"{callback_prefix}:{card_id}"
-            )]
+            [
+                InlineKeyboardButton(  # Each button should be in its own list
+                    text=option_text, callback_data=f"{callback_prefix}:{card_id}"
+                )
+            ]
             for option_text, callback_prefix in options
         ]
         return InlineKeyboardMarkup(inline_keyboard=buttons)
