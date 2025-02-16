@@ -9,6 +9,7 @@ from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 router = Router()
 
+
 @router.callback_query(CallbackExitCondition())
 async def handle_exit_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str

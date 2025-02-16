@@ -7,7 +7,9 @@ from presentation_layer.reset_trained_cards import router as reset_trained_cards
 from presentation_layer.handle_card_input import router as handle_card_input_router
 from presentation_layer.handle_card_buttons import router as handle_card_buttons_router
 from presentation_layer.handle_test_buttons import router as handle_test_buttons_router
-from presentation_layer.handle_exit_callback import router as handle_exit_callback_router
+from presentation_layer.handle_exit_callback import (
+    router as handle_exit_callback_router,
+)
 
 
 def register_handlers(dp: Dispatcher, bot: Bot):
