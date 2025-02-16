@@ -1,13 +1,12 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from domain_layer.repository.i_user_repository import IUserRepository
+from entity_layer.db_models.user_state import UserStateEntity
 from entity_layer.enums.states_enum import StatesEnum
 from typing import Optional
 
-from entity_layer.db_models.user_state import UserStateEntity
-
-
-class UserRepository:
+class UserRepository(IUserRepository):
     def __init__(self, db: AsyncSession):
         self.db = db
 
@@ -23,13 +22,9 @@ class UserRepository:
         stmt = select(UserStateEntity).filter_by(user_id=user_id)
         return await self._execute_query(stmt)
 
-    async def create_user(
-        self, user_id: str, is_card_flipped: bool
-    ) -> Optional[UserStateEntity]:
+    async def create_user(self, user_id: str, is_card_flipped: bool) -> Optional[UserStateEntity]:
         try:
-            new_state = UserStateEntity(
-                user_id=user_id, is_card_flipped=is_card_flipped
-            )
+            new_state = UserStateEntity(user_id=user_id, is_card_flipped=is_card_flipped)
             self.db.add(new_state)
             await self.db.commit()
             return new_state

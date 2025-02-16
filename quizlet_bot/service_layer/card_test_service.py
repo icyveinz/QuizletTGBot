@@ -1,16 +1,21 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from repository_layer.card_repository import CardRepository
-from repository_layer.seen_cards_repository import SeenCardsRepository
-from repository_layer.user_repository import UserRepository
+from domain_layer.repository.i_card_repository import ICardRepository
+from domain_layer.repository.i_seen_cards_repository import ISeenCardsRepository
+from domain_layer.repository.i_user_repository import IUserRepository
 from ui_layer.keyboards.trainer_test_inline_keyboards import TrainerTestInlineKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
+from typing import List
 
 
 class CardTestService:
-    def __init__(self, db: AsyncSession):
-        self.card_repo = CardRepository(db)
-        self.user_state_repo = UserRepository(db)
-        self.seen_cards_repo = SeenCardsRepository(db)
+    def __init__(
+        self,
+        card_repo: ICardRepository,
+        user_state_repo: IUserRepository,
+        seen_cards_repo: ISeenCardsRepository
+    ):
+        self.card_repo = card_repo
+        self.user_state_repo = user_state_repo
+        self.seen_cards_repo = seen_cards_repo
 
     async def _get_card_and_user_state(self, card_id: int, user_id: str):
         card = await self.card_repo.get_card(card_id)
@@ -26,7 +31,7 @@ class CardTestService:
         passed = total_cards - difference
         return passed, total_cards
 
-    async def _get_next_card_and_keyboard(self, user_id: str, seen_cards: list):
+    async def _get_next_card_and_keyboard(self, user_id: str, seen_cards: List[int]):
         next_card = await self.card_repo.get_unstudied_card(user_id, seen_cards)
         fake_answers = await self.card_repo.get_random_back_sides(user_id)
         if not next_card:
@@ -43,13 +48,9 @@ class CardTestService:
             return {"message": lexicon_ru["train_mode"]["error_card_user_state"]}
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
-            user_id
-        )
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(
-            user_id, seen_cards
-        )
+        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards)
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
@@ -68,13 +69,9 @@ class CardTestService:
         await self.card_repo.update_card(card)
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
-            user_id
-        )
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(
-            user_id, seen_cards
-        )
+        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards)
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}

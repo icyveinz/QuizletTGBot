@@ -1,17 +1,21 @@
-from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.enums.states_enum import StatesEnum
-from repository_layer.card_repository import CardRepository
-from repository_layer.seen_cards_repository import SeenCardsRepository
-from repository_layer.user_repository import UserRepository
+from domain_layer.repository.i_card_repository import ICardRepository
+from domain_layer.repository.i_seen_cards_repository import ISeenCardsRepository
+from domain_layer.repository.i_user_repository import IUserRepository
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 from utilities.parser import trim_content_to_cards
+from entity_layer.enums.states_enum import StatesEnum
 
 
 class CardService:
-    def __init__(self, db: AsyncSession):
-        self.card_repo = CardRepository(db)
-        self.user_repo = UserRepository(db)
-        self.seen_cards_repo = SeenCardsRepository(db)
+    def __init__(
+        self,
+        card_repo: ICardRepository,
+        user_repo: IUserRepository,
+        seen_cards_repo: ISeenCardsRepository
+    ):
+        self.card_repo = card_repo
+        self.user_repo = user_repo
+        self.seen_cards_repo = seen_cards_repo
 
     async def _get_user_and_card(self, user_id: str):
         card = await self.card_repo.get_next_unstudied_card(user_id)
@@ -34,7 +38,6 @@ class CardService:
 
     async def start_testing_session(self, user_id: str):
         card, user = await self._get_user_and_card(user_id)
-        print(card, user)
         if not card:
             return lexicon_ru["train_mode"]["no_more_cards_to_study"]
 

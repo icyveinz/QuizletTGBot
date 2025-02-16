@@ -1,12 +1,14 @@
+import random
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from typing import List, Optional
+from domain_layer.repository.i_card_repository import ICardRepository
 from entity_layer.db_models.card import Card
 
 
-class CardRepository:
+class CardRepository(ICardRepository):
     def __init__(self, db: AsyncSession):
         self.db = db
 
@@ -20,40 +22,28 @@ class CardRepository:
 
     async def user_has_cards(self, user_id: str) -> bool:
         result = await self._execute_query(select(Card).filter(Card.user_id == user_id))
-        if result:
-            return result.scalars().first() is not None
-        return False
+        return result.scalars().first() is not None if result else False
 
     async def get_user_cards(self, user_id: str) -> List[Card]:
         result = await self._execute_query(select(Card).filter(Card.user_id == user_id))
         return list(result.scalars()) if result else []
 
     async def get_next_unstudied_card(self, user_id: str) -> Optional[Card]:
-        result = await self._execute_query(
-            select(Card).filter_by(user_id=user_id, is_studied=False)
-        )
+        result = await self._execute_query(select(Card).filter_by(user_id=user_id, is_studied=False))
         return result.scalars().first() if result else None
 
     async def count_studied_cards(self, user_id: str) -> int:
-        query = select(func.count(Card.id)).filter_by(user_id=user_id, is_studied=True)
-        result = await self._execute_query(query)
-        if result:
-            count = result.scalar()
-            return count if count is not None else 0
-        return 0
+        result = await self._execute_query(
+            select(func.count(Card.id)).filter_by(user_id=user_id, is_studied=True)
+        )
+        return result.scalar() if result else 0
 
     async def count_all_user_cards(self, user_id: str) -> int:
-        query = select(func.count(Card.id)).filter_by(user_id=user_id)
-        result = await self._execute_query(query)
-        if result:
-            count = result.scalar()
-            return count if count is not None else 0
-        return 0
+        result = await self._execute_query(select(func.count(Card.id)).filter_by(user_id=user_id))
+        return result.scalar() if result else 0
 
     async def reset_studied_cards(self, user_id: str) -> int:
-        result = await self._execute_query(
-            select(Card).filter_by(user_id=user_id, is_studied=True)
-        )
+        result = await self._execute_query(select(Card).filter_by(user_id=user_id, is_studied=True))
         if result:
             cards_to_update = result.scalars().all()
             if cards_to_update:
@@ -63,9 +53,7 @@ class CardRepository:
                 return len(cards_to_update)
         return 0
 
-    async def create_card(
-        self, user_id: str, front_side: str, back_side: str
-    ) -> Optional[Card]:
+    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Optional[Card]:
         try:
             new_card = Card(user_id=user_id, front_side=front_side, back_side=back_side)
             self.db.add(new_card)
@@ -78,10 +66,7 @@ class CardRepository:
 
     async def create_cards(self, user_id: str, cards: List[tuple[str, str]]) -> bool:
         try:
-            new_cards = [
-                Card(user_id=user_id, front_side=front, back_side=back)
-                for front, back in cards
-            ]
+            new_cards = [Card(user_id=user_id, front_side=front, back_side=back) for front, back in cards]
             self.db.add_all(new_cards)
             await self.db.commit()
             return True
@@ -104,9 +89,7 @@ class CardRepository:
             await self.db.rollback()
             return False
 
-    async def get_unstudied_card(
-        self, user_id: str, seen_cards: List[int]
-    ) -> Optional[Card]:
+    async def get_unstudied_card(self, user_id: str, seen_cards: List[int]) -> Optional[Card]:
         seen_card_ids = set(seen_cards)
         result = await self._execute_query(
             select(Card)
@@ -116,13 +99,10 @@ class CardRepository:
         return result.scalars().first() if result else None
 
     async def get_random_back_sides(self, user_id: str) -> List[str]:
-        query = (
+        result = await self._execute_query(
             select(Card.back_side)
             .filter(Card.user_id == user_id)
             .order_by(func.random())
             .limit(3)
         )
-        result = await self._execute_query(query)
-        if result:
-            return [row[0] for row in result.all()]
-        return []
+        return [row[0] for row in result.all()] if result else []

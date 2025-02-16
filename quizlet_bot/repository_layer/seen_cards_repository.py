@@ -3,10 +3,12 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from domain_layer.repository.i_seen_cards_repository import ISeenCardsRepository
 from entity_layer.db_models.seen_cards_entity import SeenCardsEntity
+from typing import List
 
 
-class SeenCardsRepository:
+class SeenCardsRepository(ISeenCardsRepository):
     def __init__(self, db: AsyncSession):
         self.db = db
 
@@ -17,16 +19,15 @@ class SeenCardsRepository:
                 .values(related_user_id=user_id, related_card_id=card_id)
                 .on_conflict_do_nothing()
             )
-
             await self.db.execute(stmt)
             await self.db.commit()
             return True
         except SQLAlchemyError as e:
-            print(f"Database error while creating user: {e}")
+            print(f"Database error while marking card as seen: {e}")
             await self.db.rollback()
             return False
 
-    async def get_list_of_related_and_seen_cards(self, user_id: str) -> list[int]:
+    async def get_list_of_related_and_seen_cards(self, user_id: str) -> List[int]:
         try:
             result = await self.db.execute(
                 select(SeenCardsEntity.related_card_id).filter_by(
@@ -36,7 +37,7 @@ class SeenCardsRepository:
             seen_card_ids = result.scalars().all()
             return list(seen_card_ids)
         except SQLAlchemyError as e:
-            print(f"Database error while getting the list of seen cards: {e}")
+            print(f"Database error while retrieving seen cards: {e}")
             return []
 
     async def clean_seen_cards_by_user_id(self, user_id: str) -> bool:

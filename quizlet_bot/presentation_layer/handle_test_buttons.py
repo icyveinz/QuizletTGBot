@@ -7,6 +7,9 @@ from filter_layer.callback_test_trainer import (
     CallbackCardsTestTrainerFalse,
     CallbackCardsTestTrainerTrue,
 )
+from repository_layer.card_repository import CardRepository
+from repository_layer.seen_cards_repository import SeenCardsRepository
+from repository_layer.user_repository import UserRepository
 from service_layer.card_test_service import CardTestService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
@@ -19,7 +22,16 @@ router = Router()
 async def handle_flip_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
 ):
-    card_test_service = CardTestService(db)
+    card_repo = CardRepository(db)
+    user_state_repo = UserRepository(db)
+    seen_cards_repo = SeenCardsRepository(db)
+
+    card_test_service = CardTestService(
+        card_repo=card_repo,
+        seen_cards_repo=seen_cards_repo,
+        user_state_repo=user_state_repo,
+    )
+
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
 
@@ -38,7 +50,16 @@ async def handle_flip_card_button(
 async def handle_mark_studied_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
 ):
-    card_test_service = CardTestService(db)
+    card_repo = CardRepository(db)
+    user_state_repo = UserRepository(db)
+    seen_cards_repo = SeenCardsRepository(db)
+
+    card_test_service = CardTestService(
+        card_repo=card_repo,
+        seen_cards_repo=seen_cards_repo,
+        user_state_repo=user_state_repo,
+    )
+
     _, card_id = callback_query.data.split(":")
     card_id = int(card_id)
 
@@ -58,7 +79,9 @@ async def handle_mark_studied_card_button(
 async def handle_exit_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
 ):
-    user_service = UserService(db)
+    user_repository = UserRepository(db)
+    user_service = UserService(user_repo=user_repository)
+
     response = await user_service.update_user_state(
         injected_user_id, StatesEnum.ZERO_STATE.value
     )
