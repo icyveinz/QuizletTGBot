@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from typing import List, Optional
-from entity_layer.card import Card
+from entity_layer.db_models.card import Card
 
 
 class CardRepository:
@@ -114,3 +114,15 @@ class CardRepository:
             .order_by(Card.is_studied.asc(), func.random())
         )
         return result.scalars().first() if result else None
+
+    async def get_random_back_sides(self, user_id: str) -> List[str]:
+        query = (
+            select(Card.back_side)
+            .filter(Card.user_id == user_id)
+            .order_by(func.random())
+            .limit(3)
+        )
+        result = await self._execute_query(query)
+        if result:
+            return [row[0] for row in result.all()]
+        return []

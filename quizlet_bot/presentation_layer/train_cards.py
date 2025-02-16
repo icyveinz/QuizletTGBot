@@ -1,13 +1,14 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.states_enum import StatesEnum
+from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.user_state_filter import UserStateFilter
 from service_layer.card_button_service import CardButtonService
 from service_layer.card_service import CardService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.trainer_inline_keyboards import TrainerInlineKeyboards
 from ui_layer.keyboards.trainer_keyboards import TrainerKeyboard
+from ui_layer.keyboards.trainer_test_inline_keyboards import TrainerTestInlineKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 router = Router()
@@ -55,4 +56,29 @@ async def classic_card_training_mode(
         difference=difference,
         total_cards=total_cards,
     )
+    await message.answer(card.front_side, reply_markup=keyboard)
+
+
+@router.message(
+    F.text == lexicon_ru["keyboards"]["trainer_keyboard"]["test"],
+    UserStateFilter(StatesEnum.CHOOSING_TRAINING_MODE.value),
+)
+async def test_training_mode(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
+    card_service = CardService(db)
+
+    await card_service.reset_seen_cards(injected_user_id)
+    card, back_side, randomized = await card_service.start_testing_session(injected_user_id)
+
+    if not card:
+        await message.answer(lexicon_ru["train_mode"]["no_more_cards_to_study"])
+        return
+
+    keyboard = TrainerTestInlineKeyboards.create_answer_buttons(
+        card_id=card.id,
+        correct_answer=back_side,
+        wrong_answers=randomized
+    )
+
     await message.answer(card.front_side, reply_markup=keyboard)

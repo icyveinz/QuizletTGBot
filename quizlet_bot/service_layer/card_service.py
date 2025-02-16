@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.states_enum import StatesEnum
+from entity_layer.enums.states_enum import StatesEnum
 from repository_layer.card_repository import CardRepository
 from repository_layer.seen_cards_repository import SeenCardsRepository
 from repository_layer.user_repository import UserRepository
@@ -31,6 +31,16 @@ class CardService:
 
         await self.user_repo.update_user_state(user_id, StatesEnum.TRAINS_CARDS.value)
         return card, user.is_card_flipped
+
+    async def start_testing_session(self, user_id: str):
+        card, user = await self._get_user_and_card(user_id)
+        print(card, user)
+        if not card:
+            return lexicon_ru["train_mode"]["no_more_cards_to_study"]
+
+        await self.user_repo.update_user_state(user_id, StatesEnum.TESTING_CARDS.value)
+        randomized = await self.card_repo.get_random_back_sides(user_id)
+        return card, card.back_side, randomized
 
     async def get_next_train_card(self, user_id: str):
         card, user = await self._get_user_and_card(user_id)

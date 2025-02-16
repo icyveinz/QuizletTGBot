@@ -1,10 +1,10 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from entity_layer.states_enum import StatesEnum
+from entity_layer.enums.states_enum import StatesEnum
 from typing import Optional
 
-from entity_layer.user_state import UserStateEntity
+from entity_layer.db_models.user_state import UserStateEntity
 
 
 class UserRepository:

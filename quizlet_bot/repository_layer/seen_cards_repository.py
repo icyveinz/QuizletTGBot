@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from entity_layer.seen_cards_entity import SeenCardsEntity
+from entity_layer.db_models.seen_cards_entity import SeenCardsEntity
 
 
 class SeenCardsRepository:

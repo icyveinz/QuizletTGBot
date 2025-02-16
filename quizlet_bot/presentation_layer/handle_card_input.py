@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.states_enum import StatesEnum
+from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.user_state_filter import (
     UserStateFilter,
 )

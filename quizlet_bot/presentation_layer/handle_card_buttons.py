@@ -1,7 +1,7 @@
 from aiogram import Router
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.states_enum import StatesEnum
+from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerFlipCondition,
     CallbackCardsTrainerMarkStudiedCondition,
