@@ -7,7 +7,10 @@ from filter_layer.callback_test_trainer import (
     CallbackCardsTestTrainerFalse,
     CallbackCardsTestTrainerTrue,
 )
-from infrastructure_layer.service_factory import create_card_test_service, create_user_service
+from infrastructure_layer.service_factory import (
+    create_card_test_service,
+    create_user_service,
+)
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 

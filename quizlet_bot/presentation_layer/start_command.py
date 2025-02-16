@@ -2,7 +2,10 @@ from aiogram.types import Message
 from aiogram import Router
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
-from infrastructure_layer.service_factory import create_user_service, create_card_service
+from infrastructure_layer.service_factory import (
+    create_user_service,
+    create_card_service,
+)
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 

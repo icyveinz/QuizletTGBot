@@ -12,11 +12,15 @@ def create_card_service(db: AsyncSession) -> CardService:
     card_repo = CardRepository(db)
     user_repo = UserRepository(db)
     seen_cards_repo = SeenCardsRepository(db)
-    return CardService(card_repo=card_repo, seen_cards_repo=seen_cards_repo, user_repo=user_repo)
+    return CardService(
+        card_repo=card_repo, seen_cards_repo=seen_cards_repo, user_repo=user_repo
+    )
+
 
 def create_user_service(db: AsyncSession) -> UserService:
     user_repository = UserRepository(db)
     return UserService(user_repo=user_repository)
+
 
 def create_card_button_service(db: AsyncSession) -> CardButtonService:
     user_state_repo = UserRepository(db)
@@ -27,6 +31,7 @@ def create_card_button_service(db: AsyncSession) -> CardButtonService:
         seen_cards_repo=seen_cards_repo,
         card_repo=card_repo,
     )
+
 
 def create_card_test_service(db: AsyncSession) -> CardTestService:
     card_repo = CardRepository(db)

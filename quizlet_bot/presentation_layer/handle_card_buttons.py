@@ -8,7 +8,10 @@ from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerNextCondition,
 )
 from filter_layer.callback_exit_condition import CallbackExitCondition
-from infrastructure_layer.service_factory import create_user_service, create_card_button_service
+from infrastructure_layer.service_factory import (
+    create_user_service,
+    create_card_button_service,
+)
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 

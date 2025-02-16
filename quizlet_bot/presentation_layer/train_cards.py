@@ -6,7 +6,8 @@ from filter_layer.user_state_filter import UserStateFilter
 from infrastructure_layer.service_factory import (
     create_card_service,
     create_card_button_service,
-    create_user_service)
+    create_user_service,
+)
 from ui_layer.keyboards.trainer_inline_keyboards import TrainerInlineKeyboards
 from ui_layer.keyboards.trainer_keyboards import TrainerKeyboard
 from ui_layer.keyboards.trainer_test_inline_keyboards import TrainerTestInlineKeyboards

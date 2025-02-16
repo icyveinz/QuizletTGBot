@@ -3,7 +3,10 @@ from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.user_state_filter import UserStateFilter
-from infrastructure_layer.service_factory import create_user_service, create_card_service
+from infrastructure_layer.service_factory import (
+    create_user_service,
+    create_card_service,
+)
 from ui_layer.keyboards.create_cards_keyboards import CreateCardsKeyboards
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
