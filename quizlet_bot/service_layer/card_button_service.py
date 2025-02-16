@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from repository_layer.card_repository import CardRepository
 from repository_layer.seen_cards_repository import SeenCardsRepository
 from repository_layer.user_repository import UserRepository
-from ui_layer.keyboards.trainer_keyboards import TrainerKeyboards
+from ui_layer.keyboards.trainer_inline_keyboards import TrainerInlineKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 
@@ -33,7 +33,7 @@ class CardButtonService:
         if not next_card:
             return None, None
         difference, total_cards = await self.get_progress_counter(user_id)
-        keyboard = TrainerKeyboards.create_card_buttons(
+        keyboard = TrainerInlineKeyboards.create_card_buttons(
             next_card.id,
             is_card_flipped,
             difference,
@@ -93,7 +93,7 @@ class CardButtonService:
         await self.user_state_repo.toggle_user_is_card_flipped(user_id)
         difference, total_cards = await self.get_progress_counter(user_id)
         text = card.back_side if user_state.is_card_flipped else card.front_side
-        keyboard = TrainerKeyboards.create_card_buttons(
+        keyboard = TrainerInlineKeyboards.create_card_buttons(
             card.id, user_state.is_card_flipped, difference, total_cards
         )
 

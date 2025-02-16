@@ -1,16 +1,36 @@
 from aiogram import Router, F
 from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
+from entity_layer.states_enum import StatesEnum
+from filter_layer.user_state_filter import UserStateFilter
 from service_layer.card_button_service import CardButtonService
 from service_layer.card_service import CardService
-from ui_layer.keyboards.trainer_keyboards import TrainerKeyboards
+from service_layer.user_service import UserService
+from ui_layer.keyboards.trainer_inline_keyboards import TrainerInlineKeyboards
+from ui_layer.keyboards.trainer_keyboards import TrainerKeyboard
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 router = Router()
 
-
 @router.message(F.text == lexicon_ru["keyboards"]["start_keyboard"]["train_cards"])
-async def train_cards_handler(
+async def enter_training_mode(
+    message: Message, db: AsyncSession, injected_user_id: str
+):
+    user_service = UserService(db)
+
+    await user_service.update_user_state(injected_user_id, StatesEnum.CHOOSING_TRAINING_MODE.value)
+
+    await message.reply(
+        text=lexicon_ru["train_mode"]["entry"],
+        reply_markup=TrainerKeyboard.entry_builder(),
+    )
+
+
+@router.message(
+    F.text == lexicon_ru["keyboards"]["trainer_keyboard"]["classic"],
+    UserStateFilter(StatesEnum.CHOOSING_TRAINING_MODE.value),
+)
+async def classic_card_training_mode(
     message: Message, db: AsyncSession, injected_user_id: str
 ):
     card_service = CardService(db)
@@ -24,7 +44,7 @@ async def train_cards_handler(
         await message.answer(lexicon_ru["train_mode"]["no_more_cards_to_study"])
         return
 
-    keyboard = TrainerKeyboards.create_card_buttons(
+    keyboard = TrainerInlineKeyboards.create_card_buttons(
         card.id,
         is_card_flipped=is_flipped,
         difference=difference,
