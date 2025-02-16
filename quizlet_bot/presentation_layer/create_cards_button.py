@@ -3,11 +3,7 @@ from aiogram.types import Message
 from sqlalchemy.ext.asyncio import AsyncSession
 from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.user_state_filter import UserStateFilter
-from repository_layer.card_repository import CardRepository
-from repository_layer.seen_cards_repository import SeenCardsRepository
-from repository_layer.user_repository import UserRepository
-from service_layer.card_service import CardService
-from service_layer.user_service import UserService
+from infrastructure_layer.service_factory import create_user_service, create_card_service
 from ui_layer.keyboards.create_cards_keyboards import CreateCardsKeyboards
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
@@ -19,9 +15,7 @@ router = Router()
 async def handle_create_cards_button(
     message: Message, db: AsyncSession, injected_user_id: str
 ):
-    user_repo = UserRepository(db)
-
-    user_service = UserService(user_repo)
+    user_service = create_user_service(db)
 
     await user_service.update_user_state(
         injected_user_id, StatesEnum.CREATING_CARDS.value
@@ -40,9 +34,7 @@ async def handle_create_cards_button(
 async def handle_add_manual_button(
     message: Message, db: AsyncSession, injected_user_id: str
 ):
-    user_repo = UserRepository(db)
-
-    user_service = UserService(user_repo)
+    user_service = create_user_service(db)
 
     success = await user_service.update_user_state(
         injected_user_id, StatesEnum.AWAITING_FRONT.value
@@ -61,9 +53,7 @@ async def handle_add_manual_button(
 async def handle_add_auto_button(
     message: Message, db: AsyncSession, injected_user_id: str
 ):
-    user_repo = UserRepository(db)
-
-    user_service = UserService(user_repo)
+    user_service = create_user_service(db)
 
     success = await user_service.update_user_state(
         injected_user_id, StatesEnum.UPLOADING_CARDS_SETS.value
@@ -81,9 +71,7 @@ async def handle_add_auto_button(
     UserStateFilter(StatesEnum.UPLOADING_CARDS_SETS.value),
 )
 async def finish_adding_sets(message: Message, db: AsyncSession, injected_user_id: str):
-    user_repo = UserRepository(db)
-
-    user_service = UserService(user_repo)
+    user_service = create_user_service(db)
 
     await user_service.update_user_state(injected_user_id, StatesEnum.ZERO_STATE.value)
     await message.reply(
@@ -94,13 +82,7 @@ async def finish_adding_sets(message: Message, db: AsyncSession, injected_user_i
 
 @router.message(UserStateFilter(StatesEnum.UPLOADING_CARDS_SETS.value))
 async def handle_added_set(message: Message, db: AsyncSession, injected_user_id: str):
-    user_repo = UserRepository(db)
-    card_repo = CardRepository(db)
-    seen_cards_repo = SeenCardsRepository(db)
-
-    card_service = CardService(
-        user_repo=user_repo, seen_cards_repo=seen_cards_repo, card_repo=card_repo
-    )
+    card_service = create_card_service(db)
 
     success = await card_service.add_user_set(injected_user_id, message.text)
     await message.reply(

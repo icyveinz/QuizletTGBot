@@ -2,12 +2,8 @@ from aiogram.types import Message
 from aiogram import Router
 from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
-from repository_layer.card_repository import CardRepository
-from repository_layer.seen_cards_repository import SeenCardsRepository
-from repository_layer.user_repository import UserRepository
+from infrastructure_layer.service_factory import create_user_service, create_card_service
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
-from service_layer.card_service import CardService
-from service_layer.user_service import UserService
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
 
 router = Router()
@@ -15,18 +11,8 @@ router = Router()
 
 @router.message(CommandStart())
 async def start_command(message: Message, db: AsyncSession, injected_user_id: str):
-    user_repository = UserRepository(db)
-    card_repo = CardRepository(db)
-    seen_cards_repository = SeenCardsRepository(db)
-
-    user_service = UserService(user_repo=user_repository)
-    card_service = CardService(
-        card_repo=card_repo,
-        user_repo=user_repository,
-        seen_cards_repo=seen_cards_repository,
-    )
-
-    print(injected_user_id)
+    user_service = create_user_service(db)
+    card_service = create_card_service(db)
 
     user_cards_exist = await card_service.user_has_cards(injected_user_id)
 
