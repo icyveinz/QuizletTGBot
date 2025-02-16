@@ -5,9 +5,9 @@ from entity_layer.enums.states_enum import StatesEnum
 from filter_layer.callback_cards_trainer import (
     CallbackCardsTrainerFlipCondition,
     CallbackCardsTrainerMarkStudiedCondition,
-    CallbackCardsTrainerNextCondition,
-    CallbackCardsTrainerExitCondition,
+    CallbackCardsTrainerNextCondition
 )
+from filter_layer.callback_exit_condition import CallbackExitCondition
 from service_layer.card_button_service import CardButtonService
 from service_layer.user_service import UserService
 from ui_layer.keyboards.start_command_keyboards import StartCommandKeyboards
@@ -67,7 +67,7 @@ async def handle_next_card_button(
     await callback_query.answer()
 
 
-@router.callback_query(CallbackCardsTrainerExitCondition())
+@router.callback_query(CallbackExitCondition())
 async def handle_exit_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
 ):

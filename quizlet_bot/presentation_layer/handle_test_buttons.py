@@ -2,7 +2,7 @@ from aiogram import Router
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
 from entity_layer.enums.states_enum import StatesEnum
-from filter_layer.callback_cards_trainer import CallbackCardsTrainerExitCondition
+from filter_layer.callback_exit_condition import CallbackExitCondition
 from filter_layer.callback_test_trainer import (
     CallbackCardsTestTrainerFalse,
     CallbackCardsTestTrainerTrue,
@@ -54,7 +54,7 @@ async def handle_mark_studied_card_button(
     await callback_query.answer()
 
 
-@router.callback_query(CallbackCardsTrainerExitCondition())
+@router.callback_query(CallbackExitCondition())
 async def handle_exit_card_button(
     callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
 ):
