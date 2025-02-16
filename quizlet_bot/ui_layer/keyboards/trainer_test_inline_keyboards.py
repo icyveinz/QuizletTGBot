@@ -1,5 +1,6 @@
 import random
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 
 class TrainerTestInlineKeyboards:
@@ -28,4 +29,11 @@ class TrainerTestInlineKeyboards:
             ]
             for option_text, callback_prefix in options
         ]
+        buttons.append(
+            [
+                InlineKeyboardButton(
+                text=lexicon_ru["keyboards"]["trainer_inline"]["exit"],
+                callback_data=f"EXIT:{card_id}")
+            ]
+        )
         return InlineKeyboardMarkup(inline_keyboard=buttons)

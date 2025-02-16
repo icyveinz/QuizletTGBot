@@ -58,11 +58,8 @@ class CallbackCardsTrainerExitCondition(BaseFilter):
         self, callback_query: CallbackQuery, db: AsyncSession, injected_user_id: str
     ) -> bool:
         try:
-            user_repo = UserRepository(db)
-            user_state = (await user_repo.get_user(injected_user_id)).state
             return (
                 callback_query.data.startswith("EXIT:")
-                and user_state == StatesEnum.TRAINS_CARDS.value
             )
         except Exception as e:
             print(f"Error in CallbackCardsTrainerNextCondition: {e}")
