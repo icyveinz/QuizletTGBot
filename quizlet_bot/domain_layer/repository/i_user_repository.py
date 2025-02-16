@@ -2,13 +2,16 @@ from abc import ABC, abstractmethod
 from typing import Optional
 from entity_layer.db_models.user_state import UserStateEntity
 
+
 class IUserRepository(ABC):
     @abstractmethod
     async def get_user(self, user_id: str) -> Optional[UserStateEntity]:
         pass
 
     @abstractmethod
-    async def create_user(self, user_id: str, is_card_flipped: bool) -> Optional[UserStateEntity]:
+    async def create_user(
+        self, user_id: str, is_card_flipped: bool
+    ) -> Optional[UserStateEntity]:
         pass
 
     @abstractmethod

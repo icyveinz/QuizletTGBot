@@ -30,7 +30,7 @@ async def handle_flip_card_button(
     card_service = CardButtonService(
         user_state_repo=user_state_repo,
         seen_cards_repo=seen_cards_repo,
-        card_repo=card_repo
+        card_repo=card_repo,
     )
 
     _, card_id = callback_query.data.split(":")
@@ -56,7 +56,7 @@ async def handle_mark_studied_card_button(
     card_service = CardButtonService(
         user_state_repo=user_state_repo,
         seen_cards_repo=seen_cards_repo,
-        card_repo=card_repo
+        card_repo=card_repo,
     )
 
     _, card_id = callback_query.data.split(":")
@@ -83,7 +83,7 @@ async def handle_next_card_button(
     card_service = CardButtonService(
         user_state_repo=user_state_repo,
         seen_cards_repo=seen_cards_repo,
-        card_repo=card_repo
+        card_repo=card_repo,
     )
 
     _, card_id = callback_query.data.split(":")

@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+
 class ISeenCardsRepository(ABC):
     @abstractmethod
     async def mark_card_as_seen(self, user_id: str, card_id: int) -> bool:

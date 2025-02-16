@@ -21,9 +21,7 @@ async def handle_card_input(message: Message, db: AsyncSession, injected_user_id
     seen_cards_repo = SeenCardsRepository(db)
 
     card_service = CardService(
-        card_repo=card_repo,
-        seen_cards_repo=seen_cards_repo,
-        user_repo=user_repo
+        card_repo=card_repo, seen_cards_repo=seen_cards_repo, user_repo=user_repo
     )
 
     text = message.text.strip()
@@ -42,9 +40,7 @@ async def handle_back_card_input(
     seen_cards_repo = SeenCardsRepository(db)
 
     card_service = CardService(
-        card_repo=card_repo,
-        seen_cards_repo=seen_cards_repo,
-        user_repo=user_repo
+        card_repo=card_repo, seen_cards_repo=seen_cards_repo, user_repo=user_repo
     )
 
     text = message.text.strip()

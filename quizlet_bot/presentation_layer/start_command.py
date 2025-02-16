@@ -19,13 +19,11 @@ async def start_command(message: Message, db: AsyncSession, injected_user_id: st
     card_repo = CardRepository(db)
     seen_cards_repository = SeenCardsRepository(db)
 
-    user_service = UserService(
-        user_repo=user_repository
-    )
+    user_service = UserService(user_repo=user_repository)
     card_service = CardService(
         card_repo=card_repo,
         user_repo=user_repository,
-        seen_cards_repo=seen_cards_repository
+        seen_cards_repo=seen_cards_repository,
     )
 
     print(injected_user_id)

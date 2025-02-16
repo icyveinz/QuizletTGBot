@@ -11,7 +11,7 @@ class CardService:
         self,
         card_repo: ICardRepository,
         user_repo: IUserRepository,
-        seen_cards_repo: ISeenCardsRepository
+        seen_cards_repo: ISeenCardsRepository,
     ):
         self.card_repo = card_repo
         self.user_repo = user_repo

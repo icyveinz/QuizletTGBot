@@ -29,7 +29,9 @@ class ICardRepository(ABC):
         pass
 
     @abstractmethod
-    async def create_card(self, user_id: str, front_side: str, back_side: str) -> Optional[Card]:
+    async def create_card(
+        self, user_id: str, front_side: str, back_side: str
+    ) -> Optional[Card]:
         pass
 
     @abstractmethod
@@ -45,7 +47,9 @@ class ICardRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_unstudied_card(self, user_id: str, seen_cards: List[int]) -> Optional[Card]:
+    async def get_unstudied_card(
+        self, user_id: str, seen_cards: List[int]
+    ) -> Optional[Card]:
         pass
 
     @abstractmethod

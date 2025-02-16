@@ -11,7 +11,7 @@ class CardTestService:
         self,
         card_repo: ICardRepository,
         user_state_repo: IUserRepository,
-        seen_cards_repo: ISeenCardsRepository
+        seen_cards_repo: ISeenCardsRepository,
     ):
         self.card_repo = card_repo
         self.user_state_repo = user_state_repo
@@ -48,9 +48,13 @@ class CardTestService:
             return {"message": lexicon_ru["train_mode"]["error_card_user_state"]}
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
+            user_id
+        )
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards)
+        next_card, keyboard = await self._get_next_card_and_keyboard(
+            user_id, seen_cards
+        )
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}
@@ -69,9 +73,13 @@ class CardTestService:
         await self.card_repo.update_card(card)
 
         await self.seen_cards_repo.mark_card_as_seen(user_id, card_id)
-        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(user_id)
+        seen_cards = await self.seen_cards_repo.get_list_of_related_and_seen_cards(
+            user_id
+        )
 
-        next_card, keyboard = await self._get_next_card_and_keyboard(user_id, seen_cards)
+        next_card, keyboard = await self._get_next_card_and_keyboard(
+            user_id, seen_cards
+        )
 
         if next_card:
             return {"message": next_card.front_side, "keyboard": keyboard}

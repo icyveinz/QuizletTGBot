@@ -98,7 +98,9 @@ async def handle_added_set(message: Message, db: AsyncSession, injected_user_id:
     card_repo = CardRepository(db)
     seen_cards_repo = SeenCardsRepository(db)
 
-    card_service = CardService(user_repo=user_repo, seen_cards_repo=seen_cards_repo, card_repo=card_repo)
+    card_service = CardService(
+        user_repo=user_repo, seen_cards_repo=seen_cards_repo, card_repo=card_repo
+    )
 
     success = await card_service.add_user_set(injected_user_id, message.text)
     await message.reply(
