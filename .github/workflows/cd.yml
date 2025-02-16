@@ -9,11 +9,17 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Test SSH Connection
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           script: |
-            echo "✅ SSH connection successful!"
+            cd /root/bot/QuizletTGBot
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
+            docker ps  # List running containers
+            docker-compose logs -t --tail=50  # Show the last 50 log lines
+
