@@ -1,11 +1,10 @@
-import random
 from sqlalchemy import func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.future import select
 from typing import List, Optional
-from domain_layer.repository.i_card_repository import ICardRepository
-from entity_layer.db_models.card import Card
+from domain_layer.interfaces.i_card_repository import ICardRepository
+from domain_layer.db_models import Card
 
 
 class CardRepository(ICardRepository):

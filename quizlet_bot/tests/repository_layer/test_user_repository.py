@@ -2,8 +2,8 @@ import pytest
 from unittest.mock import AsyncMock, MagicMock
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import SQLAlchemyError
-from entity_layer.db_models.user_state import UserStateEntity
-from entity_layer.enums.states_enum import StatesEnum
+from domain_layer.db_models import UserStateEntity
+from domain_layer.enums.states_enum import StatesEnum
 from repository_layer.user_repository import (
     UserRepository,
 )  # Replace with the actual module path

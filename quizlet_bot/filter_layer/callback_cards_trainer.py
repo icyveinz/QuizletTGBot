@@ -1,7 +1,7 @@
 from aiogram.filters import BaseFilter
 from aiogram.types import CallbackQuery
 from sqlalchemy.ext.asyncio import AsyncSession
-from entity_layer.enums.states_enum import StatesEnum
+from domain_layer.enums.states_enum import StatesEnum
 from repository_layer.user_repository import UserRepository
 
 

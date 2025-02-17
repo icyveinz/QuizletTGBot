@@ -1,9 +1,9 @@
-from domain_layer.repository.i_card_repository import ICardRepository
-from domain_layer.repository.i_seen_cards_repository import ISeenCardsRepository
-from domain_layer.repository.i_user_repository import IUserRepository
+from domain_layer.interfaces.i_card_repository import ICardRepository
+from domain_layer.interfaces.i_seen_cards_repository import ISeenCardsRepository
+from domain_layer.interfaces.i_user_repository import IUserRepository
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 from utilities.parser import trim_content_to_cards
-from entity_layer.enums.states_enum import StatesEnum
+from domain_layer.enums.states_enum import StatesEnum
 
 
 class CardService:

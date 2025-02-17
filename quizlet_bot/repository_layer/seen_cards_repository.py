@@ -3,8 +3,8 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from domain_layer.repository.i_seen_cards_repository import ISeenCardsRepository
-from entity_layer.db_models.seen_cards_entity import SeenCardsEntity
+from domain_layer.interfaces.i_seen_cards_repository import ISeenCardsRepository
+from domain_layer.db_models.seen_cards_entity import SeenCardsEntity
 from typing import List
 
 

@@ -1,4 +1,4 @@
-from domain_layer.repository.i_user_repository import IUserRepository
+from domain_layer.interfaces.i_user_repository import IUserRepository
 
 
 class UserService:

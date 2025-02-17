@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional
-from entity_layer.db_models.user_state import UserStateEntity
+from domain_layer.db_models import UserStateEntity
 
 
 class IUserRepository(ABC):

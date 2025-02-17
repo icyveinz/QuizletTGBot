@@ -1,9 +1,9 @@
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from domain_layer.repository.i_user_repository import IUserRepository
-from entity_layer.db_models.user_state import UserStateEntity
-from entity_layer.enums.states_enum import StatesEnum
+from domain_layer.interfaces.i_user_repository import IUserRepository
+from domain_layer.db_models import UserStateEntity
+from domain_layer.enums.states_enum import StatesEnum
 from typing import Optional
 
 
