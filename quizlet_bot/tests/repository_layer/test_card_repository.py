@@ -1,8 +1,9 @@
 from unittest.mock import MagicMock, AsyncMock
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from domain_layer.db_models.card import Card
 from repository_layer.card_repository import CardRepository
-from domain_layer.db_models import Card
 
 
 @pytest.mark.asyncio

@@ -1,6 +1,5 @@
 from aiogram.types import KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-
 from ui_layer.lexicon.lexicon_ru import lexicon_ru
 
 

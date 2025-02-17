@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
-from domain_layer.db_models import Card
+from domain_layer.db_models.card import Card
 
 
 class ICardRepository(ABC):
